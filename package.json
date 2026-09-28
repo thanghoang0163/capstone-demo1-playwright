@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "allure:generate": "allure generate allure-results -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
+    "pretest:report": "rimraf allure-results allure-report",
+    "test:report": "run-s --continue-on-error \"pretest:report\" \"test\" \"allure:generate\"  \"allure:open\""
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.5.1",
+    "allure-playwright": "^3.12.1",
+    "npm-run-all2": "^9.0.3",
+    "rimraf": "^6.1.3"
+  }
+}
