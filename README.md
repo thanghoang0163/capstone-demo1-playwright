@@ -80,6 +80,26 @@ allure-results/                   # Raw Allure results
 playwright-report/                 # Playwright HTML report + failed-test attachments (via FolderReporter)
 ```
 
+### TypeScript Path Alias (`~/*`)
+Imports in this project use `~/` instead of long relative paths (e.g. `~/pages/main/LoginPage` instead of `../../../pages/main/LoginPage`). This is configured in `tsconfig.json`:
+
+```json
+"compilerOptions": {
+  "paths": {
+    "~/*": ["./*"]
+  }
+}
+```
+
+`~/*` maps to `./*` — the project's root folder — so an import always resolves the same way no matter how deeply nested the file doing the importing is. Playwright Test reads this `paths` mapping from `tsconfig.json` automatically at run time; no extra package (like `tsconfig-paths`) and no changes to `playwright.config.ts` are needed for it to work.
+
+To adjust it:
+- **Change the alias prefix** (e.g. `~/` → `@/`): edit the key under `paths`, e.g. `"@/*": ["./*"]`, then update existing imports to match.
+- **Add a narrower, second alias** (e.g. a shortcut straight to the pages folder): add another entry, e.g. `"@pages/*": ["pages/*"]`, alongside the existing one.
+- **Point the alias at a different root** (e.g. if source files move under a `src/` folder): change the target path, e.g. `"~/*": ["src/*"]`.
+
+No other file needs to change for the alias itself — just `tsconfig.json`.
+
 ### Test Data Strategy
 - **Login** (`Auth` + `Invalidation` + a setup step for Booking/Profile): uses the **fixed** account from `USERNAME_TEST`/`PASSWORD_TEST`, wired straight into `LoginPage.login()` — no parameters needed. The same account is reused as a setup step (`loginOnBaseUrl` in `utils/commonActionHandlers.ts`) whenever a Booking or Profile test needs to start already logged in.
 - **Register**: generates a **fresh random account** every run via `@faker-js/faker` plus a custom UUID-based generator (`constants/userInfo.ts` + `utils/userHandlers.ts`), so re-running the suite never collides with a previous run's account.
@@ -149,7 +169,7 @@ The suite covers the full main journey of the booking site:
 
 ## Viewing Test Results
 
-Running `npm test` alone only gives a plain terminal summary. For a full, clickable report, use:
+Running `npm run test` alone only gives a plain terminal summary. For a full, clickable report, use:
 
 ```bash
 npm run test:report
@@ -313,7 +333,7 @@ await test.step("Enter username and password, and then Click 'Đăng nhập' but
 - **Dynamic, collision-free test data, not hardcoded fixtures.** Register tests generate a fresh account every run via `@faker-js/faker` plus a custom UUID-based username generator, so re-running the suite against the same shared/live demo site never fails on "account already exists."
 - **Hybrid UI + API testing.** `apis/userApi.ts` calls the backend login endpoint directly via Playwright's `request` context, so login can be validated at the API layer as well as through the UI.
 - **A custom failure-artifact reporter, on top of Allure.** `config/folderReporter.ts` is a hand-written Playwright reporter that mirrors each failed test's folder structure under `test-results/` and copies its screenshots/videos/traces there, so failures are browsable by file path, not just by report UI.
-- **A one-command, failure-tolerant reporting pipeline.** `npm run test:report` chains cleanup → test run → Allure generation → Allure open via `npm-run-all2` (`run-s --continue-on-error`), so the pipeline still finishes and hands you a fresh report even when some tests fail — instead of a failed `npm test` aborting the whole chain before the report step ever runs.
+- **A one-command, failure-tolerant reporting pipeline.** `npm run test:report` chains cleanup → test run → Allure generation → Allure open via `npm-run-all2` (`run-s --continue-on-error`), so the pipeline still finishes and hands you a fresh report even when some tests fail — instead of a failed `npm run test` aborting the whole chain before the report step ever runs.
 - **Multiple reporters running simultaneously.** `playwright.config.ts` combines the HTML reporter, the `list` console reporter, `allure-playwright`, and the custom `FolderReporter` in one run, instead of picking just one reporting format.
 
 <br>
