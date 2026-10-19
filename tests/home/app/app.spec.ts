@@ -1,10 +1,16 @@
 import { test } from "~/fixtures/customFixtures";
-import { componentVariables } from "~/constants/commonVariables";
 import {
   navigateToSectionOnPage,
   openNewPageOnBrowser,
   waitForLoadingDisappearOnBaseUrl,
-} from "~/utils/commonActionHandlers";
+} from "~/utils/commonHandlers";
+
+// ===== VARIABLES =====
+// App Section
+const app = {
+  id: "#ungDung",
+  link: "https://apps.apple.com/us/app/123phim-mua-ve-lien-tay-chon/id615186197",
+};
 
 // ===== BEFORE EACH =====
 test.beforeEach(async ({ page, loadingScreen }) => {
@@ -19,14 +25,12 @@ test.describe("HOMEPAGE - APP SECTION", async () => {
     homePage,
   }) => {
     // Step 1: Navigate To 'Ứng Dụng' Section On Homepage
-    await navigateToSectionOnPage(
-      page,
-      componentVariables.topNavigation.app.id,
-      () => homePage.getTopNavigation().navigateToAppSection(),
+    await navigateToSectionOnPage(page, app.id, () =>
+      homePage.getTopNavigation().navigateToAppSection(),
     );
 
     // Step 2: Click Download App Button To Open New Download Page
-    await openNewPageOnBrowser(page, componentVariables.home.app.link, () =>
+    await openNewPageOnBrowser(page, app.link, () =>
       homePage.clickDownloadAppButton(),
     );
   });

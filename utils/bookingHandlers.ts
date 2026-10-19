@@ -1,14 +1,34 @@
 import { Page, Locator, expect } from "@playwright/test";
-import { componentVariables, pageVariables } from "~/constants/commonVariables";
+import { generalVariables } from "~/constants/variables/generalVariables";
 import {
   loginOnBaseUrl,
   waitForLoadingDisappearOnBaseUrl,
-} from "./commonActionHandlers";
+} from "./commonHandlers";
 import { LoadingScreen } from "~/components/LoadingScreen";
 import { CommonModal } from "~/pages/modals/CommonModal";
 import { LoginPage } from "~/pages/main/LoginPage";
 import { BookingPage } from "~/pages/main/BookingPage";
 import { HomePage } from "~/pages/main/home/HomePage";
+
+// ===== VARIABLES =====
+const cinemas = {
+  id: "#cumRap",
+};
+
+const notification = {
+  login: {
+    success: generalVariables.login.success,
+    error: "Bạn chưa đăng nhập",
+  },
+  booking: {
+    success: {
+      booking: "Đặt vé thành công",
+    },
+    error: {
+      noSeatSelection: "Bạn chưa chọn ghế",
+    },
+  },
+};
 
 // ===== GET ALL AVAILABLE SEATS =====
 const getAllAvailableSeats = async (page: Page) => {
@@ -99,9 +119,7 @@ const scrollDownToCinemaSection = async (page: Page, homePage: HomePage) => {
   await homePage.getTopNavigation().navigateToCinemasSection();
 
   // Expect The 'Cụm Rạp' Section Is Scrolled Into View
-  const cinemasSection = page.locator(
-    componentVariables.topNavigation.cinemas.id,
-  );
+  const cinemasSection = page.locator(cinemas.id);
 
   // Scroll Using Playwright Instead Of Waiting For Website's JS Animations
   await cinemasSection.scrollIntoViewIfNeeded();
@@ -193,7 +211,7 @@ const verifySeatNotSelected = async (
   // VP: Message 'Bạn chưa chọn ghế' Displays
   const selectSeatMsg = await commonModal.getMessageText();
   expect(selectSeatMsg, "Bạn đã chọn ghế").toEqual(
-    pageVariables.booking.notification.error.noSeatSelection,
+    notification.booking.error.noSeatSelection,
   );
 };
 
@@ -231,7 +249,7 @@ const loginWhileBooking = async (
   // VP: Message 'Đăng nhập thành công' Displays
   const loginMsg = await commonModal.getMessageText();
   expect(loginMsg, "Đăng nhập không thành công").toEqual(
-    pageVariables.login.notification.success,
+    notification.login.success,
   );
 };
 
@@ -249,9 +267,7 @@ const guestBooking = async (
   // Step 3: Verify User Does Not Login
   // VP: Message 'Bạn chưa đăng nhập' Displays
   const loginMsg = await commonModal.getMessageText();
-  expect(loginMsg, "Bạn đã đăng nhập").toEqual(
-    pageVariables.login.notification.error,
-  );
+  expect(loginMsg, "Bạn đã đăng nhập").toEqual(notification.login.error);
 };
 
 // Verify Booking As Guest
@@ -281,7 +297,7 @@ const loggedInBooking = async (
   // VP: Message 'Đặt vé thành công' Displays
   const bookingMsg = await commonModal.getMessageText();
   expect(bookingMsg, "Đặt vé không thành công").toEqual(
-    pageVariables.booking.notification.success.booking,
+    notification.booking.success.booking,
   );
 };
 

@@ -1,18 +1,33 @@
 import { Page } from "@playwright/test";
-import { componentVariables } from "~/constants/commonVariables";
 import { BasePage } from "~/pages/base/BasePage";
 
 export class NewsSection extends BasePage {
   // ===== DEFINE VARIABLES =====
   static readonly accessibleVariables = {
     // Tab Bar
-    tabBar: componentVariables.home.news.tabBar,
-
-    // Button
-    button: componentVariables.home.news.button,
-
+    tabBar: {
+      cinema24h: "Điện Ảnh 24h",
+      review: "review",
+      promotion: "Khuyến mãi",
+    },
     // Poster
-    poster: componentVariables.home.news.poster,
+    poster: {
+      cinema24h: {
+        title: "Diễn viên đặc biệt của Bằng Chứng Vô Hình",
+      },
+      review: {
+        title:
+          "[Review] Onward - Khi phép thuật mạnh mẽ nhất chính là tình thân",
+      },
+      promotion: {
+        title: "Sinh Nhật Mega GS",
+      },
+    },
+    // Button
+    button: {
+      viewMore: "XEM THÊM",
+      collapse: "RÚT GỌN",
+    },
   };
 
   private accessibleVars = NewsSection.accessibleVariables;

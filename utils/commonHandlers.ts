@@ -1,16 +1,17 @@
 import { Page, test, expect } from "@playwright/test";
 import { BASE_URL } from "~/routes/publicRoutes";
-import { envVariables } from "~/constants/envVariables";
+import { routeVariables } from "~/constants/variables/routeVariables";
 import { CommonModal } from "~/pages/modals/CommonModal";
 import { LoadingScreen } from "~/components/LoadingScreen";
-import { LoginPage } from "~/pages/main/LoginPage";
 import { HomePage } from "~/pages/main/home/HomePage";
+import { LoginPage } from "~/pages/main/LoginPage";
+import { RegisterPage } from "~/pages/main/RegisterPage";
 
 // ===== NAVIGATE FUNCTION =====
 // Go To Base URL
 const goToBaseUrl = async (page: Page) => {
   // Step 1: Go To https://demo1.cybersoft.edu.vn/
-  await test.step(`Go to ${envVariables.routes.baseUrl}`, async () => {
+  await test.step(`Go to ${routeVariables.baseUrl}`, async () => {
     await page.goto(BASE_URL || "");
   });
 };
@@ -43,6 +44,35 @@ const goToRegisterPage = async (page: Page, homePage: HomePage) => {
 
   // Step 2: Click 'Đăng ký' Link On The Top-right Corner Of The Page
   await homePage.getTopNavigation().navigateToRegisterPage();
+};
+
+// ===== USER =====
+// Create New User
+const createNewUser = async (
+  page: Page,
+  homePage: HomePage,
+  registerPage: RegisterPage,
+) => {
+  // Step 1: Go To Register Page
+  await goToRegisterPage(page, homePage);
+
+  // Step 2: Enter Valid Username
+  await registerPage.enterUsername();
+
+  // Step 3: Enter Valid Password
+  await registerPage.enterPassword();
+
+  // Step 4: Confirm Password
+  await registerPage.confirmPassword();
+
+  // Step 5: Enter Valid Full Name
+  await registerPage.enterFullName();
+
+  // Step 6: Enter Valid Email
+  await registerPage.enterEmail();
+
+  // Step 7: Click 'Đăng ký' Button
+  await registerPage.clickToRegister();
 };
 
 // ===== LOGIN =====
@@ -130,6 +160,7 @@ const openNewPageOnBrowser = async (
 export {
   goToBaseUrl,
   waitForLoadingDisappearOnBaseUrl,
+  createNewUser,
   goToLoginPage,
   goToRegisterPage,
   loginWithExistedAccount,

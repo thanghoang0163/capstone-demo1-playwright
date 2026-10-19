@@ -1,5 +1,5 @@
 import { test } from "~/fixtures/customFixtures";
-import { loginOnBaseUrl } from "~/utils/commonActionHandlers";
+import { loginOnBaseUrl } from "~/utils/commonHandlers";
 import {
   selectMovieInfo,
   verifySeatNotSelected,

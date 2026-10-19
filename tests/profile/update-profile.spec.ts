@@ -1,6 +1,11 @@
 import { test, expect } from "~/fixtures/customFixtures";
-import { pageVariables } from "~/constants/commonVariables";
-import { loginOnBaseUrl } from "~/utils/commonActionHandlers";
+import { loginOnBaseUrl } from "~/utils/commonHandlers";
+
+// ===== VARIABLES =====
+// Notification
+const notification = {
+  update: "Cập nhật thành công",
+};
 
 // ===== BEFORE EACH =====
 test.beforeEach(async ({ page, commonModal, homePage, loginPage }) => {
@@ -45,6 +50,6 @@ test.describe("UPDATE PROFILE", async () => {
     expect(
       updateProfileMsg,
       "Cập nhật thông tin người dùng không thành công",
-    ).toEqual(pageVariables.profile.notification.success.update);
+    ).toEqual(notification.update);
   });
 });

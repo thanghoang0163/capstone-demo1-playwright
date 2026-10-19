@@ -1,27 +1,40 @@
 import { Page } from "@playwright/test";
-import { pageVariables } from "~/constants/commonVariables";
 import { CommonPage } from "~/pages/base/CommonPage";
+import { userInfo } from "~/constants/userConstant";
+import { generalVariables } from "~/constants/variables/generalVariables";
 
 export class RegisterPage extends CommonPage {
   // ===== DEFINE VARIABLES =====
   static readonly accessibleVariables = {
     // Username
-    username: pageVariables.register.username,
-
+    username: {
+      id: generalVariables.userInfo.username.id,
+      value: userInfo.USERNAME,
+    },
     // Password
-    password: pageVariables.register.password,
-
+    password: {
+      id: generalVariables.userInfo.password.id,
+      value: userInfo.PASSWORD,
+    },
     // Confirm Password
-    confirmPassword: pageVariables.register.confirmPassword,
-
+    confirmPassword: {
+      id: generalVariables.userInfo.confirmPassword.id,
+      value: userInfo.PASSWORD,
+    },
     // Full Name
-    fullName: pageVariables.register.fullName,
-
+    fullName: {
+      id: generalVariables.userInfo.fullName.id,
+      value: userInfo.FULL_NAME,
+    },
     // Email
-    email: pageVariables.register.email,
-
-    // Register Button
-    registerButton: pageVariables.register.button,
+    email: {
+      id: generalVariables.userInfo.email.id,
+      value: userInfo.EMAIL,
+    },
+    // Button
+    button: {
+      register: "Đăng ký",
+    },
   };
 
   private accessibleVars = RegisterPage.accessibleVariables;
@@ -74,6 +87,6 @@ export class RegisterPage extends CommonPage {
   // ===== CLICK FUNCTION=====
   // Click Register Button
   public async clickToRegister(): Promise<void> {
-    await this.clickButtonRole(this.accessibleVars.registerButton);
+    await this.clickButtonRole(this.accessibleVars.button.register);
   }
 }

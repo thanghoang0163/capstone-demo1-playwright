@@ -1,7 +1,12 @@
 import { test, expect } from "~/fixtures/customFixtures";
 import { BASE_URL, privateRoutes } from "~/routes/publicRoutes";
-import { pageVariables } from "~/constants/commonVariables";
-import { loginOnBaseUrl } from "~/utils/commonActionHandlers";
+import { loginOnBaseUrl } from "~/utils/commonHandlers";
+
+// ===== VARIABLES =====
+// History Section
+const history = {
+  title: "Lịch sử đặt vé",
+};
 
 // ===== BEFORE EACH =====
 test.beforeEach(async ({ page, commonModal, homePage, loginPage }) => {
@@ -18,7 +23,7 @@ test.describe("BOOKING HISTORY - LOGGED IN", async () => {
     await page.goto(BASE_URL + privateRoutes.profile);
 
     // Wait For 'Lịch sử đặt vé' Section To Be Rendered
-    await page.waitForSelector(`text=${pageVariables.booking.history.title}`, {
+    await page.waitForSelector(`text=${history.title}`, {
       state: "visible",
     });
 

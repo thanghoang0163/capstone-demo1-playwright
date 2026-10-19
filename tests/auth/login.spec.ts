@@ -1,6 +1,12 @@
 import { test, expect } from "~/fixtures/customFixtures";
-import { pageVariables } from "~/constants/commonVariables";
-import { goToLoginPage } from "~/utils/commonActionHandlers";
+import { generalVariables } from "~/constants/variables/generalVariables";
+import { goToLoginPage } from "~/utils/commonHandlers";
+
+// ===== VARIABLES =====
+// Notification
+const notification = {
+  success: generalVariables.login.success,
+};
 
 // ===== BEFORE EACH =====
 test.beforeEach(async ({ page, homePage }) => {
@@ -24,7 +30,7 @@ test.describe("LOGIN", async () => {
     // VP: Message 'Đăng nhập thành công' Displays
     const loginMsg = await commonModal.getMessageText();
     expect(loginMsg, "Đăng nhập không thành công").toEqual(
-      pageVariables.login.notification.success,
+      notification.success,
     );
   });
 });

@@ -1,30 +1,35 @@
 import { Page } from "@playwright/test";
 import { BasePage } from "~/pages/base/BasePage";
-import {
-  componentVariables,
-  pageVariables,
-  generalVariables,
-} from "~/constants/commonVariables";
+import { userVariables } from "~/constants/variables/userVariables";
+import { generalVariables } from "~/constants/variables/generalVariables";
 
 export class TopNavigation extends BasePage {
   // ===== DEFINE VARIABLES =====
   static readonly accessibleVariables = {
     // Main Links
     link: {
-      login: componentVariables.topNavigation.login,
-      register: componentVariables.topNavigation.register,
-      showTimes: componentVariables.topNavigation.showTimes.title,
-      cinemas: componentVariables.topNavigation.cinemas.title,
-      news: componentVariables.topNavigation.news.title,
-      app: componentVariables.topNavigation.app.title,
-      profile: componentVariables.topNavigation.profile,
+      login: "Đăng Nhập",
+      register: "Đăng Ký",
+      showTimes: {
+        title: "Lịch Chiếu",
+      },
+      cinemas: {
+        title: "Cụm Rạp",
+      },
+      news: {
+        title: "Tin Tức",
+      },
+      app: {
+        title: "Ứng Dụng",
+      },
+      profile: `Avatar ${userVariables.fullNameTest}`,
     },
     // Logout
     logout: {
       // Notification content
-      confirmPopup: pageVariables.logout.confirmPopup,
-      successPopup: pageVariables.logout.successPopup,
-      button: pageVariables.logout.button,
+      button: "Đăng xuất",
+      confirmPopup: "Bạn có muốn đăng xuất ?",
+      successPopup: "Đã đăng xuất",
     },
     // Button
     button: {
@@ -52,22 +57,22 @@ export class TopNavigation extends BasePage {
 
   // Navigate To Show Times Section
   public async navigateToShowTimesSection(): Promise<void> {
-    await this.clickHrefFilter(this.accessibleVars.link.showTimes);
+    await this.clickHrefFilter(this.accessibleVars.link.showTimes.title);
   }
 
   // Navigate To Cinemas Section
   public async navigateToCinemasSection(): Promise<void> {
-    await this.clickHrefFilter(this.accessibleVars.link.cinemas);
+    await this.clickHrefFilter(this.accessibleVars.link.cinemas.title);
   }
 
   // Navigate To News Section
   public async navigateToNewsSection(): Promise<void> {
-    await this.clickHrefFilter(this.accessibleVars.link.news);
+    await this.clickHrefFilter(this.accessibleVars.link.news.title);
   }
 
   // Navigate To Application Section
   public async navigateToAppSection(): Promise<void> {
-    await this.clickHrefFilter(this.accessibleVars.link.app);
+    await this.clickHrefFilter(this.accessibleVars.link.app.title);
   }
 
   // Navigate To Profile Page

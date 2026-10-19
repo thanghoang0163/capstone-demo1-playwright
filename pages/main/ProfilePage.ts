@@ -1,30 +1,49 @@
 import { Page } from "@playwright/test";
-import { pageVariables } from "~/constants/commonVariables";
+import { generalVariables } from "~/constants/variables/generalVariables";
+import { userVariables } from "~/constants/variables/userVariables";
+import { profileVariables } from "~/constants/variables/profileVariables";
 import { CommonPage } from "~/pages/base/CommonPage";
 
 export class ProfilePage extends CommonPage {
   // ===== DEFINE VARIABLES =====
   static readonly accessibleVariables = {
     // Username
-    username: pageVariables.profile.username,
-
+    username: {
+      id: generalVariables.userInfo.username.id,
+      value: profileVariables.update.usernameTest,
+    },
     // Full Name
-    fullName: pageVariables.profile.fullName,
-
+    fullName: {
+      id: generalVariables.userInfo.fullName.id,
+      value: profileVariables.update.fullNameTest,
+    },
     // Phone Number
-    phoneNumber: pageVariables.profile.phoneNumber,
-
+    phoneNumber: {
+      id: generalVariables.userInfo.phoneNumber.id,
+      value: profileVariables.update.phoneNumberTest,
+    },
     // Password
-    password: pageVariables.profile.password,
-
+    password: {
+      id: generalVariables.userInfo.password.id,
+      value: profileVariables.update.passwordTest,
+    },
     // Email
-    email: pageVariables.profile.email,
-
+    email: {
+      id: generalVariables.userInfo.email.id,
+      value: profileVariables.update.emailTest,
+    },
     // Role
-    role: pageVariables.profile.role,
-
-    // Update Profile Button
-    updateProfileButton: pageVariables.profile.button,
+    role: {
+      id: "maLoaiNguoiDung",
+      value: {
+        admin: userVariables.role.admin,
+        customer: userVariables.role.customer,
+      },
+    },
+    // Button
+    button: {
+      updateProfile: "Cập Nhật",
+    },
   };
 
   private accessibleVars = ProfilePage.accessibleVariables;
@@ -93,6 +112,6 @@ export class ProfilePage extends CommonPage {
   // ===== CLICK FUNCTION =====
   //  Click The 'CẬP NHẬT' Button To Update Profile
   public async clickToUpdate(): Promise<void> {
-    await this.clickButtonRole(this.accessibleVars.updateProfileButton);
+    await this.clickButtonRole(this.accessibleVars.button.updateProfile);
   }
 }

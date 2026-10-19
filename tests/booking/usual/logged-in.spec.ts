@@ -3,7 +3,7 @@ import {
   selectMovieInfo,
   verifyBookingWhenLoggingInBeforehand,
 } from "~/utils/bookingHandlers";
-import { loginOnBaseUrl } from "~/utils/commonActionHandlers";
+import { loginOnBaseUrl } from "~/utils/commonHandlers";
 
 // ===== BEFORE EACH =====
 test.beforeEach(async ({ page, commonModal, homePage, loginPage }) => {
