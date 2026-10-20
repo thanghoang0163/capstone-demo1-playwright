@@ -1,16 +1,31 @@
 import { test } from "~/fixtures/customFixtures";
-import { loginOnBaseUrl } from "~/utils/commonActionHandlers";
 import {
   selectMovieInfo,
   verifySeatNotSelected,
 } from "~/utils/bookingHandlers";
+import { loginWithNewUser } from "~/utils/commonHandlers";
 
 // ===== BEFORE EACH =====
-test.beforeEach(async ({ page, commonModal, homePage, loginPage }) => {
-  // Login On Base URL Before Testing
-  await loginOnBaseUrl(page, commonModal, homePage, loginPage);
-});
-
+test.beforeEach(
+  async ({
+    page,
+    commonModal,
+    loadingScreen,
+    homePage,
+    registerPage,
+    loginPage,
+  }) => {
+    // Login With New User
+    await loginWithNewUser(
+      page,
+      commonModal,
+      loadingScreen,
+      homePage,
+      registerPage,
+      loginPage,
+    );
+  },
+);
 // ===== TEST STEPS =====
 test.describe("USUAL BOOKING - DO NOT SELECT SEAT WHILE BOOKING", async () => {
   test("Verify No Seat Selected While Booking", async ({

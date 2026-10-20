@@ -1,21 +1,18 @@
 import { Page } from "@playwright/test";
-import { componentVariables } from "~/constants/commonVariables";
 import { BasePage } from "~/pages/base/BasePage";
 
 export class InputField extends BasePage {
   // ===== DEFINE VARIABLES =====
   static readonly accessibleVariables = {
-    // Login
-    login: componentVariables.inputField.notification.error.login,
-
-    // Register
-    register: componentVariables.inputField.notification.error.register,
-
-    // Empty
-    empty: componentVariables.inputField.notification.error.empty,
-
     // Message
-    message: componentVariables.inputField.message,
+    message: {
+      username: "#taiKhoan-helper-text",
+      password: "#matKhau-helper-text",
+      confirmPassword: "#confirmPassWord-helper-text",
+      fullName: "#hoTen-helper-text",
+      email: "#email-helper-text",
+      phoneNumber: "#soDt-helper-text",
+    },
   };
 
   public accessibleVars = InputField.accessibleVariables;

@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { timeout } from "~/constants/timeoutConstant";
 
 type PlaywrightLocator = string | Locator;
 
@@ -55,7 +56,10 @@ export abstract class BasePage {
     options?: { timeout?: number | undefined } | undefined,
   ) {
     // handle customParam ....
-    await this.resolveLocator(locator).click(options);
+    await this.resolveLocator(locator).click({
+      timeout: timeout.LONG,
+      ...options,
+    });
     // handle ...
   }
 
@@ -80,7 +84,10 @@ export abstract class BasePage {
     value: string,
     options?: { timeout?: number | undefined } | undefined,
   ) {
-    await this.resolveLocator(locator).fill(value, options);
+    await this.resolveLocator(locator).fill(value, {
+      timeout: timeout.LONG,
+      ...options,
+    });
   }
 
   // ===== SELECT OPTION FUNCTION =====

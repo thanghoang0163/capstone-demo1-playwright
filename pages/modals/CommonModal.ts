@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { componentVariables } from "~/constants/commonVariables";
 import { BasePage } from "~/pages/base/BasePage";
 
 export class CommonModal extends BasePage {
@@ -7,7 +6,7 @@ export class CommonModal extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.lblBigTitle = page.locator(componentVariables.modal.bigTitle);
+    this.lblBigTitle = page.locator("#swal2-title");
   }
 
   // ===== GET MESSAGE TEXT =====

@@ -1,26 +1,45 @@
 import { Page } from "@playwright/test";
-import { pageVariables, generalVariables } from "~/constants/commonVariables";
+import { generalVariables } from "~/constants/variables/generalVariables";
 import { getFirstAvailableSeatNumber } from "~/utils/bookingHandlers";
 import { CommonPage } from "~/pages/base/CommonPage";
 
 export class BookingPage extends CommonPage {
   // ===== DEFINE VARIABLES =====
   static readonly accessibleVariables = {
-    // Cinema Info
-    cinema: pageVariables.booking.cinema,
-
-    // Movie Info
-    movie: pageVariables.booking.movie,
-
+    // Cinema
+    cinema: {
+      name: "lotte-cinema",
+      place: "Lotte - Thủ Đức L2-Joy",
+      showTime: "-12-2021  ~  12:00",
+    },
+    // Movie
+    movie: {
+      name: "C18The Gentlemen DangbkQuý ô",
+      showTime: "-07-2026  ~  20:00",
+    },
+    // Select Option
+    selectOption: {
+      movie: {
+        label: "film",
+        option: "10531",
+      },
+      cinema: {
+        label: "cinema",
+        option: "bhd-star-cineplex-3-2",
+      },
+      showTime: {
+        label: "date",
+        option: "46258",
+      },
+    },
     // Button
     button: {
-      ...pageVariables.booking.button,
+      bookingNow: "MUA VÉ NGAY",
+      scrollToCinemaList: "Mua vé",
+      bookingTicket: "ĐẶT VÉ",
       accept: generalVariables.button.accept,
       cancel: generalVariables.button.no,
     },
-
-    // Select Option On Homepage
-    selectOption: pageVariables.booking.selectOption,
   };
 
   private accessibleVars = BookingPage.accessibleVariables;

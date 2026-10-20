@@ -1,6 +1,6 @@
 import { test } from "~/fixtures/customFixtures";
 import { selectMovieInfo, verifyBookingAsGuest } from "~/utils/bookingHandlers";
-import { waitForLoadingDisappearOnBaseUrl } from "~/utils/commonActionHandlers";
+import { waitForLoadingDisappearOnBaseUrl } from "~/utils/commonHandlers";
 
 // ===== BEFORE EACH =====
 test.beforeEach(async ({ page, loadingScreen }) => {

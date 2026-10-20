@@ -1,7 +1,30 @@
 import { test, expect } from "~/fixtures/customFixtures";
-import { componentVariables, pageVariables } from "~/constants/commonVariables";
-import { goToLoginPage } from "~/utils/commonActionHandlers";
+import { generalVariables } from "~/constants/variables/generalVariables";
+import { goToLoginPage } from "~/utils/commonHandlers";
 
+// ===== VARIABLES =====
+// Input Verification
+const inputVerification = {
+  incorrect: "Tài khoản hoặc mật khẩu không đúng!",
+  empty: generalVariables.inputField.notification.error.empty,
+  password: {
+    lessThanRequiredCharacters:
+      generalVariables.inputField.notification.error.password
+        .lessThanRequiredCharacters,
+  },
+};
+
+// User Input
+const userInput = {
+  username: {
+    id: generalVariables.userInfo.username.id,
+  },
+  password: {
+    id: generalVariables.userInfo.password.id,
+  },
+};
+
+// Testing Variables
 const testingVariables = {
   invalidAccount: {
     username: "abc",
@@ -30,13 +53,13 @@ test.describe("INVALIDATION - LOGIN", () => {
     // VP1: Message 'Đây là trường bắt buộc !' Displays On Username
     const usernameMsg = await inputField.getUsernameMessageText();
     expect(usernameMsg, "'Tài Khoản' đang chứa giá trị").toEqual(
-      componentVariables.inputField.notification.error.empty,
+      inputVerification.empty,
     );
 
     // VP2: Message 'Đây là trường bắt buộc !' Displays On Password
     const passwordMsg = await inputField.getPasswordMessageText();
     expect(passwordMsg, "'Mật Khẩu' đang chứa giá trị").toEqual(
-      componentVariables.inputField.notification.error.empty,
+      inputVerification.empty,
     );
   });
 
@@ -47,13 +70,13 @@ test.describe("INVALIDATION - LOGIN", () => {
   }) => {
     // Step 1: Enter Invalid Username
     await loginPage.fill(
-      pageVariables.login.username.id,
+      userInput.username.id,
       testingVariables.invalidAccount.username,
     );
 
     // Step 2: Enter Invalid Password
     await loginPage.fill(
-      pageVariables.login.password.id,
+      userInput.password.id,
       testingVariables.invalidAccount.password,
     );
 
@@ -64,7 +87,7 @@ test.describe("INVALIDATION - LOGIN", () => {
     // VP: Message 'Tài khoản hoặc mật khẩu không đúng!' Displays
     const usernameMsg = await inputField.getAlertMessageText();
     expect(usernameMsg, "Tài khoản và mật khẩu đã đúng").toEqual(
-      componentVariables.inputField.notification.error.login.incorrect,
+      inputVerification.incorrect,
     );
   });
 
@@ -75,7 +98,7 @@ test.describe("INVALIDATION - LOGIN", () => {
   }) => {
     // Step 1: Enter Invalid Password
     await loginPage.fill(
-      pageVariables.login.password.id,
+      userInput.password.id,
       testingVariables.invalidPassword,
     );
 
@@ -86,8 +109,7 @@ test.describe("INVALIDATION - LOGIN", () => {
     // VP: Message 'Mật khẩu phải có ít nhất 6 kí tự !' Displays
     const passwordMsg = await inputField.getPasswordMessageText();
     expect(passwordMsg, "Mật khẩu có chứa 6 kí tự trở lên").toEqual(
-      componentVariables.inputField.notification.error.login.password
-        .lessThanRequiredCharacters,
+      inputVerification.password.lessThanRequiredCharacters,
     );
   });
 });

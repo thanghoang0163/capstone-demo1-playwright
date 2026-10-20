@@ -1,10 +1,23 @@
 import { test } from "~/fixtures/customFixtures";
-import { componentVariables } from "~/constants/commonVariables";
 import {
   navigateToSectionOnPage,
   openNewPageOnBrowser,
   waitForLoadingDisappearOnBaseUrl,
-} from "~/utils/commonActionHandlers";
+} from "~/utils/commonHandlers";
+
+// ===== VARIABLES =====
+// News Section
+const news = {
+  id: "#tinTuc",
+};
+
+// Poster Section
+const poster = {
+  cinema24h: {
+    id: "#simple-tabpanel-0",
+    link: "https://tix.vn/goc-dien-anh/7939-dien-vien-dac-biet-cua-bang-chung-vo-hinh",
+  },
+};
 
 // ===== BEFORE EACH =====
 test.beforeEach(async ({ page, loadingScreen }) => {
@@ -19,10 +32,8 @@ test.describe("HOMEPAGE - NEWS SECTION", async () => {
     homePage,
   }) => {
     // Step 1: Navigate To 'Tin Tức' Section On Homepage
-    await navigateToSectionOnPage(
-      page,
-      componentVariables.topNavigation.news.id,
-      () => homePage.getTopNavigation().navigateToNewsSection(),
+    await navigateToSectionOnPage(page, news.id, () =>
+      homePage.getTopNavigation().navigateToNewsSection(),
     );
 
     // Step 2: Switch To 'Review' Tab
@@ -61,17 +72,13 @@ test.describe("HOMEPAGE - NEWS SECTION", async () => {
     // Step 7: Click The 'XEM THÊM' Button
     await homePage.clickViewMoreButton();
 
-    await page
-      .locator(componentVariables.home.news.poster.cinema24h.id)
-      .waitFor({
-        state: "visible",
-      });
+    await page.locator(poster.cinema24h.id).waitFor({
+      state: "visible",
+    });
 
     // Step 8: Click Poster On The 'Điện Ảnh 24h' Tab Page To Open New Download Page
-    await openNewPageOnBrowser(
-      page,
-      componentVariables.home.news.poster.cinema24h.link,
-      () => homePage.clickPosterOnCinema24hTab(),
+    await openNewPageOnBrowser(page, poster.cinema24h.link, () =>
+      homePage.clickPosterOnCinema24hTab(),
     );
   });
 });

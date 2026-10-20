@@ -1,52 +1,50 @@
 import { test, expect } from "~/fixtures/customFixtures";
-import { pageVariables } from "~/constants/commonVariables";
-import { USERNAME, PASSWORD } from "~/constants/userInfo";
+import { userInfo } from "~/constants/userConstant";
 import { loginRequest } from "~/apis/userApi";
-import { goToRegisterPage } from "~/utils/commonActionHandlers";
+import { createNewUser, goToRegisterPage } from "~/utils/commonHandlers";
+
+// ===== VARIABLES =====
+// Notification
+const notification = {
+  success: "Đăng ký thành công",
+};
 
 // ===== BEFORE EACH =====
-test.beforeEach(async ({ page, homePage }) => {
-  // Go To Login Page
-  await goToRegisterPage(page, homePage);
-});
+// test.beforeEach(async ({ page, homePage }) => {
+//   // Go To Register Page
+//   // await goToRegisterPage(page, homePage);
+// });
 
 // ===== TEST STEPS =====
 test.describe.serial("REGISTER", () => {
   test("Verify Register Successfully", async ({
-    commonModal,
+    page,
+    homePage,
     registerPage,
+    commonModal,
   }) => {
-    // Step 1: Enter Valid Username
-    await registerPage.enterUsername();
+    // Step 1: Go To Register Page
+    await goToRegisterPage(page, homePage);
 
-    // Step 2: Enter Valid Password
-    await registerPage.enterPassword();
+    // Step 2: Register New User
+    await registerPage.register();
 
-    // Step 3: Confirm Password
-    await registerPage.confirmPassword();
-
-    // Step 4: Enter Valid Full Name
-    await registerPage.enterFullName();
-
-    // Step 5: Enter Valid Email
-    await registerPage.enterEmail();
-
-    // Step 6: Click 'Đăng ký' Button
-    await registerPage.clickToRegister();
-
-    // Step 7: Verify User Registers Successfully
+    // Step 8: Verify User Registers Successfully
     // VP: Message 'Đăng ký thành công' Displays
     const registerMsg = await commonModal.getMessageText();
     expect(registerMsg, "Đăng ký không thành công").toEqual(
-      pageVariables.register.notification.success,
+      notification.success,
     );
   });
 
   test("Login Validation By Calling API", async ({ request }) => {
-    const data = await loginRequest(request, {
-      taiKhoan: USERNAME,
-      matKhau: PASSWORD,
-    });
+    const data = await loginRequest(
+      {
+        taiKhoan: userInfo.USERNAME,
+        matKhau: userInfo.PASSWORD,
+      },
+      request,
+    );
 
     expect(data, "Lấy được dữ liệu người dùng không thành công").toBeTruthy();
   });

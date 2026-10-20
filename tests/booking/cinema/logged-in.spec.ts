@@ -6,12 +6,22 @@ import {
 
 // ===== BEFORE EACH =====
 test.beforeEach(
-  async ({ page, commonModal, homePage, loginPage, bookingPage }) => {
+  async ({
+    page,
+    commonModal,
+    loadingScreen,
+    homePage,
+    registerPage,
+    loginPage,
+    bookingPage,
+  }) => {
     // Select Movie From The 'Select Option' Component On Homepage With Logged In
     await selectCinemaPlaceAndShowtimeWithLoggedIn(
       page,
       commonModal,
+      loadingScreen,
       homePage,
+      registerPage,
       loginPage,
       bookingPage,
     );

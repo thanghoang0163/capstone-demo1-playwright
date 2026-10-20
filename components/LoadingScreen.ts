@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { componentVariables } from "~/constants/commonVariables";
 import { BasePage } from "~/pages/base/BasePage";
 
 export class LoadingScreen extends BasePage {
@@ -7,7 +6,7 @@ export class LoadingScreen extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.loading = page.locator(componentVariables.loading.class);
+    this.loading = page.locator("//div[@class='jss77']");
   }
 
   // ===== WAIT LOADING DISAPPEAR =====

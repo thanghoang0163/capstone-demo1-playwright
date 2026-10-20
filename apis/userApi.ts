@@ -1,31 +1,52 @@
 import { APIRequestContext } from "@playwright/test";
-import { envVariables } from "~/constants/envVariables";
+import { routeVariables } from "~/constants/variables/routeVariables";
+import { fetchApi } from "~/utils/apiHandlers";
 
-const userAPIPath = "api/QuanLyNguoiDung/DangNhap";
+const userAPIPath = "QuanLyNguoiDung/DangNhap";
 
-const userEndpoint = envVariables.routes.userApiUrl + userAPIPath;
+const userEndpoint = routeVariables.APIUrl + userAPIPath;
+
+interface UserRegisterRequest {
+  confirmPassword: string;
+  email: string;
+  hoTen: string;
+  maLoaiNguoiDung: string;
+  maNhom: string;
+  matKhau: string;
+  taiKhoan: string;
+}
 
 interface UserLoginRequest {
   taiKhoan: string;
   matKhau: string;
 }
 
+// ===== REGISTER API =====
+export const registerRequest = async (
+  body: UserRegisterRequest,
+  request: APIRequestContext,
+) => {
+  return await fetchApi(
+    userEndpoint,
+    {
+      method: "POST",
+      data: body,
+    },
+    request,
+  );
+};
+
 // ===== LOGIN API =====
 export const loginRequest = async (
-  request: APIRequestContext,
   body: UserLoginRequest,
+  request: APIRequestContext,
 ) => {
-  const res = await request.post(userEndpoint, {
-    data: body,
-  });
-
-  if (!res.ok()) {
-    const errorText = await res.text();
-    throw new Error(
-      `Failed to login user: ${res.status()} ${res.statusText()}. Response: ${errorText}`,
-    );
-  }
-
-  const data = await res.json();
-  return data;
+  return await fetchApi(
+    userEndpoint,
+    {
+      method: "POST",
+      data: body,
+    },
+    request,
+  );
 };

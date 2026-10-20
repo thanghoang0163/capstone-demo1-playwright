@@ -1,7 +1,7 @@
-import { envVariables } from "~/constants/envVariables";
+import { routeVariables } from "~/constants/variables/routeVariables";
 
 // ===== DEFINE BASE URL =====
-const BASE_URL = envVariables.routes.baseUrl;
+const BASE_URL = routeVariables.baseUrl;
 
 // ===== DEFINE PUBLIC ROUTES =====
 const publicRoutes = {

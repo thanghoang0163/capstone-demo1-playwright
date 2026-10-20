@@ -1,11 +1,16 @@
 import { test } from "~/fixtures/customFixtures";
 import { selectMovieInfo, loginWhileBooking } from "~/utils/bookingHandlers";
-import { waitForLoadingDisappearOnBaseUrl } from "~/utils/commonActionHandlers";
+import { registerNewUserBeforeTesting } from "~/utils/commonHandlers";
 
 // ===== BEFORE EACH =====
-test.beforeEach(async ({ page, loadingScreen }) => {
-  // Go To Base URL And Wait For The Loading Screen Disappear
-  await waitForLoadingDisappearOnBaseUrl(page, loadingScreen);
+test.beforeEach(async ({ page, loadingScreen, homePage, registerPage }) => {
+  // Step 1: Register Before Selecting Movie
+  await registerNewUserBeforeTesting(
+    page,
+    loadingScreen,
+    homePage,
+    registerPage,
+  );
 });
 
 // ===== TEST STEPS =====
