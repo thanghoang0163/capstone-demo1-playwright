@@ -3,13 +3,29 @@ import {
   selectMovieInfo,
   verifyBookingWhenLoggingInBeforehand,
 } from "~/utils/bookingHandlers";
-import { loginOnBaseUrl } from "~/utils/commonHandlers";
+import { loginWithNewUser } from "~/utils/commonHandlers";
 
 // ===== BEFORE EACH =====
-test.beforeEach(async ({ page, commonModal, homePage, loginPage }) => {
-  // Login On Base URL Before Testing
-  await loginOnBaseUrl(page, commonModal, homePage, loginPage);
-});
+test.beforeEach(
+  async ({
+    page,
+    commonModal,
+    loadingScreen,
+    homePage,
+    registerPage,
+    loginPage,
+  }) => {
+    // Login With New User
+    await loginWithNewUser(
+      page,
+      commonModal,
+      loadingScreen,
+      homePage,
+      registerPage,
+      loginPage,
+    );
+  },
+);
 
 // ===== TEST STEPS =====
 test.describe("LOGGED IN BOOKING", async () => {

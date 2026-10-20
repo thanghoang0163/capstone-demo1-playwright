@@ -24,13 +24,10 @@ test.describe.serial("REGISTER", () => {
     commonModal,
   }) => {
     // Step 1: Go To Register Page
-    // Step 2: Enter Valid Username
-    // Step 3: Enter Valid Password
-    // Step 4: Confirm Password
-    // Step 5: Enter Valid Full Name
-    // Step 6: Enter Valid Email
-    // Step 7: Click 'Đăng ký' Button
-    await createNewUser(page, homePage, registerPage);
+    await goToRegisterPage(page, homePage);
+
+    // Step 2: Register New User
+    await registerPage.register();
 
     // Step 8: Verify User Registers Successfully
     // VP: Message 'Đăng ký thành công' Displays

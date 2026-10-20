@@ -52,9 +52,25 @@ export class LoginPage extends CommonPage {
   }
 
   // ===== E2E LOGIN FUNCTION =====
+  // Login
   public async login(): Promise<void> {
     await this.enterUsername();
     await this.enterPassword();
+    await this.clickToLogin();
+  }
+
+  // Login With New User
+  public async loginWithNewUser(
+    username: string,
+    password: string,
+  ): Promise<void> {
+    // Step 1: Enter Username
+    await this.fill(this.accessibleVars.username.id, username);
+
+    // Step 2: Enter Password
+    await this.fill(this.accessibleVars.password.id, password);
+
+    // Step 6: Click 'Đăng nhập' Button
     await this.clickToLogin();
   }
 }

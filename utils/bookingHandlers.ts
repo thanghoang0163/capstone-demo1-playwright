@@ -1,7 +1,9 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { generalVariables } from "~/constants/variables/generalVariables";
+import { userInfo } from "~/constants/userConstant";
 import {
-  loginOnBaseUrl,
+  loginWithNewUser,
+  registerNewUserBeforeTesting,
   waitForLoadingDisappearOnBaseUrl,
 } from "./commonHandlers";
 import { LoadingScreen } from "~/components/LoadingScreen";
@@ -9,8 +11,17 @@ import { CommonModal } from "~/pages/modals/CommonModal";
 import { LoginPage } from "~/pages/main/LoginPage";
 import { BookingPage } from "~/pages/main/BookingPage";
 import { HomePage } from "~/pages/main/home/HomePage";
+import { RegisterPage } from "~/pages/main/RegisterPage";
 
 // ===== VARIABLES =====
+const newUserInfo = {
+  username: userInfo.USERNAME,
+  password: userInfo.PASSWORD,
+  confirmPassword: userInfo.PASSWORD,
+  fullName: userInfo.FULL_NAME,
+  email: userInfo.EMAIL,
+};
+
 const cinemas = {
   id: "#cumRap",
 };
@@ -97,16 +108,45 @@ const selectMovieFromSelectOptionAsGuest = async (
   await selectMovieFromSelectOption(bookingPage);
 };
 
+// Register Before Selecting Movie From The 'Select Option' Component On Homepage As Guest
+const registerBeforeSelectingMovieFromSelectOption = async (
+  page: Page,
+  loadingScreen: LoadingScreen,
+  homePage: HomePage,
+  registerPage: RegisterPage,
+  bookingPage: BookingPage,
+) => {
+  // Step 1: Register Before Testing
+  await registerNewUserBeforeTesting(
+    page,
+    loadingScreen,
+    homePage,
+    registerPage,
+  );
+
+  // Step 3: Select A Movie From 'Select Option' Component
+  await selectMovieFromSelectOption(bookingPage);
+};
+
 // Select Movie From The 'Select Option' Component On Homepage With Logged In
 const selectMovieFromSelectOptionWithLoggedIn = async (
   page: Page,
   commonModal: CommonModal,
+  loadingScreen: LoadingScreen,
   homePage: HomePage,
+  registerPage: RegisterPage,
   loginPage: LoginPage,
   bookingPage: BookingPage,
 ) => {
-  // Step 1: Login On Base URL Before Testing
-  await loginOnBaseUrl(page, commonModal, homePage, loginPage);
+  // Step 1: Login With New User
+  await loginWithNewUser(
+    page,
+    commonModal,
+    loadingScreen,
+    homePage,
+    registerPage,
+    loginPage,
+  );
 
   // Step 2: Select A Movie From 'Select Option' Component
   await selectMovieFromSelectOption(bookingPage);
@@ -164,16 +204,47 @@ const selectCinemaPlaceAndShowtimeAsGuest = async (
   await selectCinemaPlaceAndShowtime(page, homePage, bookingPage);
 };
 
+// Register Before Selecting Cinema Place And Showtime On Homepage As Guest
+const registerBeforeSelectingCinemaPlaceAndShowtime = async (
+  page: Page,
+  loadingScreen: LoadingScreen,
+  homePage: HomePage,
+  registerPage: RegisterPage,
+  bookingPage: BookingPage,
+) => {
+  // Step 1: Register Before Testing
+  await registerNewUserBeforeTesting(
+    page,
+    loadingScreen,
+    homePage,
+    registerPage,
+  );
+
+  // Step 3: Select Place And Showtime From Cinema Section
+  await selectCinemaPlaceAndShowtime(page, homePage, bookingPage);
+};
+
 // Select Cinema Place And Showtime On Homepage With Logged In
 const selectCinemaPlaceAndShowtimeWithLoggedIn = async (
   page: Page,
   commonModal: CommonModal,
+  loadingScreen: LoadingScreen,
   homePage: HomePage,
+  registerPage: RegisterPage,
   loginPage: LoginPage,
   bookingPage: BookingPage,
 ) => {
-  // Step 1: Login On Base URL Before Testing
-  await loginOnBaseUrl(page, commonModal, homePage, loginPage);
+  // Step 1: Login With New User
+  await loginWithNewUser(
+    page,
+    commonModal,
+    loadingScreen,
+    homePage,
+    registerPage,
+    loginPage,
+  );
+
+  // await loginOnBaseUrl(page, commonModal, homePage, loginPage);
 
   // Wait For Scroll Down Animation To Complete
   await page.waitForTimeout(4000);
@@ -243,7 +314,7 @@ const loginWhileBooking = async (
   await bookingPage.clickToLogIn();
 
   // Step 4: Login With Existed Account
-  await loginPage.login();
+  await loginPage.loginWithNewUser(newUserInfo.username, newUserInfo.password);
 
   // Step 5: Verify User Login Successfully
   // VP: Message 'Đăng nhập thành công' Displays
@@ -319,9 +390,11 @@ export {
   selectMovieFromSelectOption,
   selectMovieFromSelectOptionAsGuest,
   selectMovieFromSelectOptionWithLoggedIn,
+  registerBeforeSelectingMovieFromSelectOption,
   selectCinemaPlaceAndShowtime,
   selectCinemaPlaceAndShowtimeAsGuest,
   selectCinemaPlaceAndShowtimeWithLoggedIn,
+  registerBeforeSelectingCinemaPlaceAndShowtime,
   selectSeat,
   verifySeatNotSelected,
   selectMovieInfo,

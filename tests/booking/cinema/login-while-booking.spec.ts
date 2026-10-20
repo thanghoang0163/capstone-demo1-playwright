@@ -2,19 +2,22 @@ import { test } from "~/fixtures/customFixtures";
 import {
   loginWhileBooking,
   selectCinemaPlaceAndShowtime,
-  selectCinemaPlaceAndShowtimeAsGuest,
+  registerBeforeSelectingCinemaPlaceAndShowtime,
 } from "~/utils/bookingHandlers";
 
 // ===== BEFORE EACH =====
-test.beforeEach(async ({ page, loadingScreen, homePage, bookingPage }) => {
-  // Select Movie From The 'Select Option' Component On Homepage As Guest
-  await selectCinemaPlaceAndShowtimeAsGuest(
-    page,
-    loadingScreen,
-    homePage,
-    bookingPage,
-  );
-});
+test.beforeEach(
+  async ({ page, loadingScreen, homePage, registerPage, bookingPage }) => {
+    // Select Movie From The 'Select Option' Component On Homepage As Guest
+    await registerBeforeSelectingCinemaPlaceAndShowtime(
+      page,
+      loadingScreen,
+      homePage,
+      registerPage,
+      bookingPage,
+    );
+  },
+);
 
 // ===== TEST STEPS =====
 test.describe("HOMEPAGE CINEMA SECTION - LOG IN WHILE BOOKING", async () => {

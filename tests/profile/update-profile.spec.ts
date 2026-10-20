@@ -1,5 +1,5 @@
 import { test, expect } from "~/fixtures/customFixtures";
-import { loginOnBaseUrl } from "~/utils/commonHandlers";
+import { loginWithNewUser, updateProfile } from "~/utils/commonHandlers";
 
 // ===== VARIABLES =====
 // Notification
@@ -8,10 +8,26 @@ const notification = {
 };
 
 // ===== BEFORE EACH =====
-test.beforeEach(async ({ page, commonModal, homePage, loginPage }) => {
-  // Login On Base URL Before Testing
-  await loginOnBaseUrl(page, commonModal, homePage, loginPage);
-});
+test.beforeEach(
+  async ({
+    page,
+    commonModal,
+    loadingScreen,
+    homePage,
+    registerPage,
+    loginPage,
+  }) => {
+    // Login With New User
+    await loginWithNewUser(
+      page,
+      commonModal,
+      loadingScreen,
+      homePage,
+      registerPage,
+      loginPage,
+    );
+  },
+);
 
 // ===== TEST STEPS =====
 test.describe("UPDATE PROFILE", async () => {
@@ -21,28 +37,7 @@ test.describe("UPDATE PROFILE", async () => {
     profilePage,
   }) => {
     // Step 1: Click Avatar Link To Go To Profile Page
-    await topNavigation.navigateToProfilePage();
-
-    // Step 2: Enter Username
-    await profilePage.enterUsername();
-
-    // Step 3: Enter Full Name
-    await profilePage.enterFullname();
-
-    // Step 4: Enter Phone Number
-    await profilePage.enterPhoneNumber();
-
-    // Step 5: Enter Password
-    await profilePage.enterPassword();
-
-    // Step 6: Enter Email
-    await profilePage.enterEmail();
-
-    // Step 7: Select Admin Role
-    await profilePage.selectAdminRole();
-
-    // Step 8: Click The 'CẬP NHẬT' Button To Update Profile
-    await profilePage.clickToUpdate();
+    await updateProfile(topNavigation, profilePage);
 
     // Step 9: Verify User Logs Out Successfully
     // VP: Message 'Cập nhật thành công' Displays

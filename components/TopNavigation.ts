@@ -22,7 +22,7 @@ export class TopNavigation extends BasePage {
       app: {
         title: "Ứng Dụng",
       },
-      profile: `Avatar ${userVariables.fullNameTest}`,
+      profile: "Avatar",
     },
     // Logout
     logout: {
@@ -36,6 +36,10 @@ export class TopNavigation extends BasePage {
       accept: generalVariables.button.accept,
       cancel: generalVariables.button.cancel,
     },
+    //Logo
+    logo: {
+      name: "Logo",
+    },
   };
 
   private accessibleVars = TopNavigation.accessibleVariables;
@@ -45,6 +49,13 @@ export class TopNavigation extends BasePage {
   }
 
   // ===== NAVIGATE FUNCTION =====
+  // Navigate to Home Page
+  public async navigateToHomePage(): Promise<void> {
+    // await this.clickByRole("img", this.accessibleVars.logo.name, true);
+
+    await this.page.getByRole("img", { name: "Logo", exact: true }).click();
+  }
+
   // Navigate To Login Page
   public async navigateToLoginPage(): Promise<void> {
     await this.clickLinkRole(this.accessibleVars.link.login);
@@ -76,8 +87,8 @@ export class TopNavigation extends BasePage {
   }
 
   // Navigate To Profile Page
-  public async navigateToProfilePage(): Promise<void> {
-    await this.clickLinkRole(this.accessibleVars.link.profile);
+  public async navigateToProfilePage(fullName: string): Promise<void> {
+    await this.clickLinkRole(this.accessibleVars.link.profile + " " + fullName);
   }
 
   // ===== LOGOUT FUNCTION =====

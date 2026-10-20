@@ -1,11 +1,23 @@
 import { Page, test, expect } from "@playwright/test";
 import { BASE_URL } from "~/routes/publicRoutes";
 import { routeVariables } from "~/constants/variables/routeVariables";
+import { userInfo } from "~/constants/userConstant";
 import { CommonModal } from "~/pages/modals/CommonModal";
 import { LoadingScreen } from "~/components/LoadingScreen";
+import { TopNavigation } from "~/components/TopNavigation";
 import { HomePage } from "~/pages/main/home/HomePage";
 import { LoginPage } from "~/pages/main/LoginPage";
 import { RegisterPage } from "~/pages/main/RegisterPage";
+import { ProfilePage } from "~/pages/main/ProfilePage";
+
+// ===== VARIABLES =====
+const newUserInfo = {
+  username: userInfo.USERNAME,
+  password: userInfo.PASSWORD,
+  confirmPassword: userInfo.PASSWORD,
+  fullName: userInfo.FULL_NAME,
+  email: userInfo.EMAIL,
+};
 
 // ===== NAVIGATE FUNCTION =====
 // Go To Base URL
@@ -56,26 +68,60 @@ const createNewUser = async (
   // Step 1: Go To Register Page
   await goToRegisterPage(page, homePage);
 
-  // Step 2: Enter Valid Username
-  await registerPage.enterUsername();
+  // Step 2: Register New User
+  await registerPage.registerNewUser(
+    newUserInfo.username,
+    newUserInfo.password,
+    newUserInfo.confirmPassword,
+    newUserInfo.fullName,
+    newUserInfo.email,
+  );
+};
 
-  // Step 3: Enter Valid Password
-  await registerPage.enterPassword();
+// ===== REGISTER =====
+// Register New User Before Testing
+const registerNewUserBeforeTesting = async (
+  page: Page,
+  loadingScreen: LoadingScreen,
+  homePage: HomePage,
+  registerPage: RegisterPage,
+) => {
+  // Step 1: Create New User
+  await createNewUser(page, homePage, registerPage);
 
-  // Step 4: Confirm Password
-  await registerPage.confirmPassword();
-
-  // Step 5: Enter Valid Full Name
-  await registerPage.enterFullName();
-
-  // Step 6: Enter Valid Email
-  await registerPage.enterEmail();
-
-  // Step 7: Click 'Đăng ký' Button
-  await registerPage.clickToRegister();
+  // Step 2: Go To Base URL And Wait For The Loading Screen Disappear
+  await waitForLoadingDisappearOnBaseUrl(page, loadingScreen);
 };
 
 // ===== LOGIN =====
+// Login With New User
+const loginWithNewUser = async (
+  page: Page,
+  commonModal: CommonModal,
+  loadingScreen: LoadingScreen,
+  homePage: HomePage,
+  registerPage: RegisterPage,
+  loginPage: LoginPage,
+) => {
+  // Step 1: Create New User
+  await createNewUser(page, homePage, registerPage);
+
+  // Step 2: Wait For The 'Đăng ký thành công' Modal Disappear
+  await commonModal.waitForModalDisappear();
+
+  // Step 3: Go To Login Page
+  await homePage.getTopNavigation().navigateToLoginPage();
+
+  // Step 4: Login With New User
+  await loginPage.loginWithNewUser(newUserInfo.username, newUserInfo.password);
+
+  // Step 5: Wait For The 'Đăng nhập thành công' Modal Disappear
+  await commonModal.waitForModalDisappear();
+
+  // Step 6: Wait For The Loading Screen Disappear
+  await loadingScreen.waitForLoadingDisappear();
+};
+
 // Login With Existed Account
 const loginWithExistedAccount = async (
   commonModal: CommonModal,
@@ -157,14 +203,48 @@ const openNewPageOnBrowser = async (
   expect(newPage.url(), "Không mở được trang ở tab mới").toBe(link);
 };
 
+// ===== UPDATE PROFILE FUNCTION =====
+// Update User Profile
+const updateProfile = async (
+  topNavigation: TopNavigation,
+  profilePage: ProfilePage,
+) => {
+  // Step 1: Click Avatar Link To Go To Profile Page
+  await topNavigation.navigateToProfilePage(newUserInfo.fullName);
+
+  // Step 2: Enter Username
+  await profilePage.enterUsername();
+
+  // Step 3: Enter Full Name
+  await profilePage.enterFullname();
+
+  // Step 4: Enter Phone Number
+  await profilePage.enterPhoneNumber();
+
+  // Step 5: Enter Password
+  await profilePage.enterPassword();
+
+  // Step 6: Enter Email
+  await profilePage.enterEmail();
+
+  // Step 7: Select Admin Role
+  await profilePage.selectAdminRole();
+
+  // Step 8: Click The 'CẬP NHẬT' Button To Update Profile
+  await profilePage.clickToUpdate();
+};
+
 export {
   goToBaseUrl,
   waitForLoadingDisappearOnBaseUrl,
   createNewUser,
   goToLoginPage,
   goToRegisterPage,
+  registerNewUserBeforeTesting,
+  loginWithNewUser,
   loginWithExistedAccount,
   loginOnBaseUrl,
   navigateToSectionOnPage,
   openNewPageOnBrowser,
+  updateProfile,
 };

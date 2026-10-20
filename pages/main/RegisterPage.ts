@@ -89,4 +89,53 @@ export class RegisterPage extends CommonPage {
   public async clickToRegister(): Promise<void> {
     await this.clickButtonRole(this.accessibleVars.button.register);
   }
+
+  // ===== E2E REGISTER FUNCTION =====
+  // Register
+  public async register(): Promise<void> {
+    // Step 1: Enter Username
+    await this.enterUsername();
+
+    // Step 2: Enter Password
+    await this.enterPassword();
+
+    // Step 3: Confirm Password
+    await this.confirmPassword();
+
+    // Step 4: Enter Full Name
+    await this.enterFullName();
+
+    // Step 5: Enter Email
+    await this.enterEmail();
+
+    // Step 6: Click 'Đăng ký' Button
+    await this.clickToRegister();
+  }
+
+  // Register New User
+  public async registerNewUser(
+    username: string,
+    password: string,
+    confirmPassword: string,
+    fullName: string,
+    email: string,
+  ): Promise<void> {
+    // Step 1: Enter Username
+    await this.fill(this.accessibleVars.username.id, username);
+
+    // Step 2: Enter Password
+    await this.fill(this.accessibleVars.password.id, password);
+
+    // Step 3: Confirm Password
+    await this.fill(this.accessibleVars.confirmPassword.id, confirmPassword);
+
+    // Step 4: Enter Full Name
+    await this.fill(this.accessibleVars.fullName.id, fullName);
+
+    // Step 5: Enter Email
+    await this.fill(this.accessibleVars.email.id, email);
+
+    // Step 6: Click 'Đăng ký' Button
+    await this.clickToRegister();
+  }
 }
