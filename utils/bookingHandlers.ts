@@ -2,6 +2,7 @@ import { Page, Locator, expect } from "@playwright/test";
 import { generalVariables } from "~/constants/variables/generalVariables";
 import { userInfo } from "~/constants/userConstant";
 import {
+  navigateToSectionOnPage,
   loginWithNewUser,
   registerNewUserBeforeTesting,
   waitForLoadingDisappearOnBaseUrl,
@@ -42,6 +43,7 @@ const notification = {
 };
 
 // ===== GET ALL AVAILABLE SEATS =====
+// Get All Available Seats
 const getAllAvailableSeats = async (page: Page) => {
   // Get All The Button That Do Not Contain The "Mui-disabled" Classes
   const allButtons = page.locator(
@@ -56,13 +58,14 @@ const getAllAvailableSeats = async (page: Page) => {
     hasText: /^\d+$/,
   });
 
-  // Consolidate All Available Seats Into List
+  // Return Available Seats List
   const availableSeatsList: Locator[] = await availableSeats.all();
 
   return availableSeatsList;
 };
 
-const getFirstAvailableSeatNumber = async (page: Page) => {
+// Get First Available Seat
+const getFirstAvailableSeat = async (page: Page) => {
   // Get All Available Seats
   const availableSeatsList = await getAllAvailableSeats(page);
 
@@ -71,12 +74,12 @@ const getFirstAvailableSeatNumber = async (page: Page) => {
     return null;
   }
 
-  // Get The First Seat Number
-  const firstAvailableSeatNumber = await availableSeatsList[0]
+  // Return The First Seat Number
+  const firstAvailableSeat = await availableSeatsList[0]
     .locator(".MuiButton-label")
     .textContent();
 
-  return firstAvailableSeatNumber;
+  return firstAvailableSeat;
 };
 
 // ===== SELECTION OPTION FUNCTION =====
@@ -124,7 +127,7 @@ const registerBeforeSelectingMovieFromSelectOption = async (
     registerPage,
   );
 
-  // Step 3: Select A Movie From 'Select Option' Component
+  // Step 2: Select A Movie From 'Select Option' Component
   await selectMovieFromSelectOption(bookingPage);
 };
 
@@ -153,24 +156,6 @@ const selectMovieFromSelectOptionWithLoggedIn = async (
 };
 
 // ===== SELECT CINEMA FUNCTION =====
-// Scroll Down To Cinema Section On Homepage
-const scrollDownToCinemaSection = async (page: Page, homePage: HomePage) => {
-  // Step 1: Click 'Cụm Rạp' Tab From Top Navigation Bar
-  await homePage.getTopNavigation().navigateToCinemasSection();
-
-  // Expect The 'Cụm Rạp' Section Is Scrolled Into View
-  const cinemasSection = page.locator(cinemas.id);
-
-  // Scroll Using Playwright Instead Of Waiting For Website's JS Animations
-  await cinemasSection.scrollIntoViewIfNeeded();
-
-  // Wait For The Cinema Section In Viewport
-  await expect(
-    cinemasSection,
-    "Phần 'Cụm Rạp' không có trong Viewport",
-  ).toBeInViewport();
-};
-
 // Select Cinema Place And Showtime On Homepage
 const selectCinemaPlaceAndShowtime = async (
   page: Page,
@@ -178,7 +163,9 @@ const selectCinemaPlaceAndShowtime = async (
   bookingPage: BookingPage,
 ) => {
   // Step 1: Scroll Down To Cinema Section On Homepage
-  await scrollDownToCinemaSection(page, homePage);
+  await navigateToSectionOnPage(page, cinemas.id, homePage, () =>
+    homePage.getTopNavigation().navigateToCinemasSection(),
+  );
 
   // Step 2: Select Cinema
   await bookingPage.selectCinema();
@@ -220,7 +207,7 @@ const registerBeforeSelectingCinemaPlaceAndShowtime = async (
     registerPage,
   );
 
-  // Step 3: Select Place And Showtime From Cinema Section
+  // Step 2: Select Place And Showtime From Cinema Section
   await selectCinemaPlaceAndShowtime(page, homePage, bookingPage);
 };
 
@@ -247,7 +234,7 @@ const selectCinemaPlaceAndShowtimeWithLoggedIn = async (
   // await loginOnBaseUrl(page, commonModal, homePage, loginPage);
 
   // Wait For Scroll Down Animation To Complete
-  await page.waitForTimeout(4000);
+  await page.waitForTimeout(4_000);
 
   // Step 2: Select Place And Showtime From Cinema Section
   await selectCinemaPlaceAndShowtime(page, homePage, bookingPage);
@@ -257,15 +244,13 @@ const selectCinemaPlaceAndShowtimeWithLoggedIn = async (
 // Select The First Available Seat And Then Click The 'ĐẶT VÉ' Button To Booking
 const selectSeat = async (page: Page, bookingPage: BookingPage) => {
   // Step 1: Select The First Available Seat
-  const firstSeatNumber = await bookingPage.getFirstAvailableSeat(page);
-
-  // Select The First Available Seat
-
-  firstSeatNumber != null &&
-    (await bookingPage.clickButtonRole(firstSeatNumber));
+  const firstSeat = await getFirstAvailableSeat(page);
 
   // VP: Check If At Least One Available Seat
-  expect(firstSeatNumber, "Không còn chỗ để đặt tại rạp").not.toBeNull();
+  expect(firstSeat, "Không còn chỗ để đặt tại rạp").not.toBeNull();
+
+  // Select The First Available Seat
+  await bookingPage.clickButtonRole(firstSeat!);
 
   // Step 2: Click The 'ĐẶT VÉ' Button To Booking
   await bookingPage.clickToBookingTicket();
@@ -280,8 +265,9 @@ const verifySeatNotSelected = async (
   await bookingPage.clickToBookingTicket();
 
   // VP: Message 'Bạn chưa chọn ghế' Displays
-  const selectSeatMsg = await commonModal.getMessageText();
-  expect(selectSeatMsg, "Bạn đã chọn ghế").toEqual(
+  await bookingPage.equalExpect(
+    () => commonModal.getMessageText(),
+    "Bạn đã chọn ghế",
     notification.booking.error.noSeatSelection,
   );
 };
@@ -314,12 +300,13 @@ const loginWhileBooking = async (
   await bookingPage.clickToLogIn();
 
   // Step 4: Login With Existed Account
-  await loginPage.loginWithNewUser(newUserInfo.username, newUserInfo.password);
+  await loginPage.loginWithUser(newUserInfo.username, newUserInfo.password);
 
   // Step 5: Verify User Login Successfully
   // VP: Message 'Đăng nhập thành công' Displays
-  const loginMsg = await commonModal.getMessageText();
-  expect(loginMsg, "Đăng nhập không thành công").toEqual(
+  await bookingPage.equalExpect(
+    () => commonModal.getMessageText(),
+    "Đăng nhập không thành công",
     notification.login.success,
   );
 };
@@ -337,8 +324,11 @@ const guestBooking = async (
 
   // Step 3: Verify User Does Not Login
   // VP: Message 'Bạn chưa đăng nhập' Displays
-  const loginMsg = await commonModal.getMessageText();
-  expect(loginMsg, "Bạn đã đăng nhập").toEqual(notification.login.error);
+  await bookingPage.equalExpect(
+    () => commonModal.getMessageText(),
+    "Bạn đã đăng nhập",
+    notification.login.error,
+  );
 };
 
 // Verify Booking As Guest
@@ -366,8 +356,9 @@ const loggedInBooking = async (
 
   // Step 3: Verify User Booking Successfully
   // VP: Message 'Đặt vé thành công' Displays
-  const bookingMsg = await commonModal.getMessageText();
-  expect(bookingMsg, "Đặt vé không thành công").toEqual(
+  await bookingPage.equalExpect(
+    () => commonModal.getMessageText(),
+    "Đặt vé không thành công",
     notification.booking.success.booking,
   );
 };
@@ -385,8 +376,6 @@ const verifyBookingWhenLoggingInBeforehand = async (
 };
 
 export {
-  getAllAvailableSeats,
-  getFirstAvailableSeatNumber,
   selectMovieFromSelectOption,
   selectMovieFromSelectOptionAsGuest,
   selectMovieFromSelectOptionWithLoggedIn,

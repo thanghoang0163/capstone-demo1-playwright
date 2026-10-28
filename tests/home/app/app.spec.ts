@@ -25,7 +25,7 @@ test.describe("HOMEPAGE - APP SECTION", async () => {
     homePage,
   }) => {
     // Step 1: Navigate To 'Ứng Dụng' Section On Homepage
-    await navigateToSectionOnPage(page, app.id, () =>
+    await navigateToSectionOnPage(page, app.id, homePage, () =>
       homePage.getTopNavigation().navigateToAppSection(),
     );
 

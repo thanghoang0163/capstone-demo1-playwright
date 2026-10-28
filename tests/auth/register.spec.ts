@@ -1,7 +1,7 @@
 import { test, expect } from "~/fixtures/customFixtures";
 import { userInfo } from "~/constants/userConstant";
 import { loginRequest } from "~/apis/userApi";
-import { createNewUser, goToRegisterPage } from "~/utils/commonHandlers";
+import { goToRegisterPage } from "~/utils/commonHandlers";
 
 // ===== VARIABLES =====
 // Notification
@@ -27,12 +27,13 @@ test.describe.serial("REGISTER", () => {
     await goToRegisterPage(page, homePage);
 
     // Step 2: Register New User
-    await registerPage.register();
+    await registerPage.registerNewUser();
 
-    // Step 8: Verify User Registers Successfully
+    // Step 3: Verify User Registers Successfully
     // VP: Message 'Đăng ký thành công' Displays
-    const registerMsg = await commonModal.getMessageText();
-    expect(registerMsg, "Đăng ký không thành công").toEqual(
+    await registerPage.equalExpect(
+      () => commonModal.getMessageText(),
+      "Đăng ký không thành công",
       notification.success,
     );
   });

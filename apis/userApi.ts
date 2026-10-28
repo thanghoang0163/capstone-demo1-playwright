@@ -2,10 +2,15 @@ import { APIRequestContext } from "@playwright/test";
 import { routeVariables } from "~/constants/variables/routeVariables";
 import { fetchApi } from "~/utils/apiHandlers";
 
-const userAPIPath = "QuanLyNguoiDung/DangNhap";
+// ===== ENDPOINTS =====
+// Login Endpoint
+const loginEndpoint = routeVariables.APIUrl + "QuanLyNguoiDung/DangNhap";
 
-const userEndpoint = routeVariables.APIUrl + userAPIPath;
+// Register Endpoint
+const registerEndpoint = routeVariables.APIUrl + "QuanLyNguoiDung/DangKy";
 
+// ===== INTERFACES =====
+// User Register Request Interface
 interface UserRegisterRequest {
   confirmPassword: string;
   email: string;
@@ -16,6 +21,7 @@ interface UserRegisterRequest {
   taiKhoan: string;
 }
 
+// User Login Request Interface
 interface UserLoginRequest {
   taiKhoan: string;
   matKhau: string;
@@ -27,7 +33,7 @@ export const registerRequest = async (
   request: APIRequestContext,
 ) => {
   return await fetchApi(
-    userEndpoint,
+    registerEndpoint,
     {
       method: "POST",
       data: body,
@@ -42,7 +48,7 @@ export const loginRequest = async (
   request: APIRequestContext,
 ) => {
   return await fetchApi(
-    userEndpoint,
+    loginEndpoint,
     {
       method: "POST",
       data: body,

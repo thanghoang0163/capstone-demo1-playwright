@@ -1,6 +1,5 @@
 import { Page } from "@playwright/test";
 import { BasePage } from "~/pages/base/BasePage";
-import { userVariables } from "~/constants/variables/userVariables";
 import { generalVariables } from "~/constants/variables/generalVariables";
 
 export class TopNavigation extends BasePage {

@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { timeout } from "~/constants/timeoutConstant";
 
 type PlaywrightLocator = string | Locator;
@@ -53,11 +53,11 @@ export abstract class BasePage {
   // Click Function
   public async click(
     locator: PlaywrightLocator,
-    options?: { timeout?: number | undefined } | undefined,
+    options?: { timeout?: number },
   ) {
     // handle customParam ....
     await this.resolveLocator(locator).click({
-      timeout: timeout.LONG,
+      timeout: timeout.DEFAULT,
       ...options,
     });
     // handle ...
@@ -65,7 +65,7 @@ export abstract class BasePage {
 
   // Click Href Filter
   public async clickHrefFilter(hasText?: string | RegExp) {
-    return await this.filter("a", hasText).click();
+    await this.filter("a", hasText).click();
   }
 
   // Click By Text
@@ -82,10 +82,10 @@ export abstract class BasePage {
   public async fill(
     locator: PlaywrightLocator,
     value: string,
-    options?: { timeout?: number | undefined } | undefined,
+    options?: { timeout?: number },
   ) {
     await this.resolveLocator(locator).fill(value, {
-      timeout: timeout.LONG,
+      timeout: timeout.DEFAULT,
       ...options,
     });
   }
@@ -105,5 +105,61 @@ export abstract class BasePage {
   // Get Message Text By Alert Role
   public async getMessageTextByAlertRole(): Promise<string | null> {
     return await this.page.getByRole("alert").textContent();
+  }
+
+  // ===== EXPECT FUNCTION =====
+  // Equal Expectation
+  public async equalExpect(
+    getActual: () => Promise<string | null>,
+    message: string,
+    expected: string,
+    waitTimeout: number = timeout.SHORT,
+  ): Promise<void> {
+    await expect
+      .poll(getActual, { message, timeout: waitTimeout })
+      .toEqual(expected);
+  }
+
+  // To Be Visible Expectation
+  public async toBeVisibleExpect(
+    actual: Locator,
+    messageOrOptions: string | { message?: string } | undefined,
+    option?: {
+      timeout?: number;
+    },
+  ): Promise<void> {
+    await expect(actual, messageOrOptions).toBeVisible({
+      timeout: timeout.LONG,
+      ...option,
+    });
+  }
+
+  // To Have URL Expectation
+  public async toHaveUrlExpect(
+    actual: Page,
+    messageOrOptions: string | { message?: string } | undefined,
+    urlExpected: string,
+    option?: {
+      timeout?: number;
+    },
+  ): Promise<void> {
+    await expect(actual, messageOrOptions).toHaveURL(urlExpected, {
+      timeout: timeout.DEFAULT,
+      ...option,
+    });
+  }
+
+  // To Be In Viewport Expectation
+  public async toBeInViewportExpect(
+    actual: Locator,
+    messageOrOptions: string | { message?: string } | undefined,
+    option?: {
+      timeout?: number;
+    },
+  ): Promise<void> {
+    await expect(actual, messageOrOptions).toBeInViewport({
+      timeout: timeout.SHORT,
+      ...option,
+    });
   }
 }

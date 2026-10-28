@@ -45,43 +45,38 @@ export class RegisterPage extends CommonPage {
 
   // ===== FILL FUNCTION =====
   // Enter Username
-  public async enterUsername(): Promise<void> {
-    await this.fill(
-      this.accessibleVars.username.id,
-      this.accessibleVars.username.value,
-    );
+  public async enterUsername(
+    value = this.accessibleVars.username.value,
+  ): Promise<void> {
+    await this.fill(this.accessibleVars.username.id, value);
   }
 
   // Enter Password
-  public async enterPassword(): Promise<void> {
-    await this.fill(
-      this.accessibleVars.password.id,
-      this.accessibleVars.password.value,
-    );
+  public async enterPassword(
+    value = this.accessibleVars.password.value,
+  ): Promise<void> {
+    await this.fill(this.accessibleVars.password.id, value);
   }
 
   // Enter Confirm Password
-  public async confirmPassword(): Promise<void> {
-    await this.fill(
-      this.accessibleVars.confirmPassword.id,
-      this.accessibleVars.confirmPassword.value,
-    );
+  public async enterConfirmPassword(
+    value = this.accessibleVars.confirmPassword.value,
+  ): Promise<void> {
+    await this.fill(this.accessibleVars.confirmPassword.id, value);
   }
 
   // Enter Full Name
-  public async enterFullName(): Promise<void> {
-    await this.fill(
-      this.accessibleVars.fullName.id,
-      this.accessibleVars.fullName.value,
-    );
+  public async enterFullName(
+    value = this.accessibleVars.fullName.value,
+  ): Promise<void> {
+    await this.fill(this.accessibleVars.fullName.id, value);
   }
 
   // Enter Email
-  public async enterEmail(): Promise<void> {
-    await this.fill(
-      this.accessibleVars.email.id,
-      this.accessibleVars.email.value,
-    );
+  public async enterEmail(
+    value = this.accessibleVars.email.value,
+  ): Promise<void> {
+    await this.fill(this.accessibleVars.email.id, value);
   }
 
   // ===== CLICK FUNCTION=====
@@ -91,51 +86,31 @@ export class RegisterPage extends CommonPage {
   }
 
   // ===== E2E REGISTER FUNCTION =====
-  // Register
-  public async register(): Promise<void> {
-    // Step 1: Enter Username
-    await this.enterUsername();
-
-    // Step 2: Enter Password
-    await this.enterPassword();
-
-    // Step 3: Confirm Password
-    await this.confirmPassword();
-
-    // Step 4: Enter Full Name
-    await this.enterFullName();
-
-    // Step 5: Enter Email
-    await this.enterEmail();
-
-    // Step 6: Click 'Đăng ký' Button
-    await this.clickToRegister();
-  }
-
   // Register New User
   public async registerNewUser(
-    username: string,
-    password: string,
-    confirmPassword: string,
-    fullName: string,
-    email: string,
+    username?: string,
+    password?: string,
+    confirmPassword?: string,
+    fullName?: string,
+    email?: string,
   ): Promise<void> {
     // Step 1: Enter Username
-    await this.fill(this.accessibleVars.username.id, username);
+    await this.enterUsername(username);
 
     // Step 2: Enter Password
-    await this.fill(this.accessibleVars.password.id, password);
+    await this.enterPassword(password);
 
     // Step 3: Confirm Password
-    await this.fill(this.accessibleVars.confirmPassword.id, confirmPassword);
+    await this.enterConfirmPassword(confirmPassword);
 
     // Step 4: Enter Full Name
-    await this.fill(this.accessibleVars.fullName.id, fullName);
+    await this.enterFullName(fullName);
 
     // Step 5: Enter Email
-    await this.fill(this.accessibleVars.email.id, email);
+    await this.enterEmail(email);
 
     // Step 6: Click 'Đăng ký' Button
     await this.clickToRegister();
+
   }
 }

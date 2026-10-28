@@ -1,4 +1,4 @@
-import { test, expect } from "~/fixtures/customFixtures";
+import { test } from "~/fixtures/customFixtures";
 import { generalVariables } from "~/constants/variables/generalVariables";
 import { goToLoginPage } from "~/utils/commonHandlers";
 
@@ -28,8 +28,9 @@ test.describe("LOGIN", async () => {
 
     // Step 4: Verify User Login Successfully
     // VP: Message 'Đăng nhập thành công' Displays
-    const loginMsg = await commonModal.getMessageText();
-    expect(loginMsg, "Đăng nhập không thành công").toEqual(
+    await loginPage.equalExpect(
+      () => commonModal.getMessageText(),
+      "Đăng nhập không thành công",
       notification.success,
     );
   });

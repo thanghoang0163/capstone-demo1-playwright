@@ -1,6 +1,5 @@
 import { Page } from "@playwright/test";
 import { generalVariables } from "~/constants/variables/generalVariables";
-import { getFirstAvailableSeatNumber } from "~/utils/bookingHandlers";
 import { CommonPage } from "~/pages/base/CommonPage";
 
 export class BookingPage extends CommonPage {
@@ -62,11 +61,6 @@ export class BookingPage extends CommonPage {
   // Select The Show Time
   public async selectShowTime(): Promise<void> {
     await this.clickByText(this.accessibleVars.movie.showTime);
-  }
-
-  // Get The First Available Seat
-  public async getFirstAvailableSeat(page: Page): Promise<string | null> {
-    return await getFirstAvailableSeatNumber(page);
   }
 
   // Click The 'ĐẶT VÉ' Button To Booking

@@ -30,19 +30,17 @@ export class LoginPage extends CommonPage {
 
   // ===== FILL FUNCTION =====
   // Enter Username
-  public async enterUsername(): Promise<void> {
-    await this.fill(
-      this.accessibleVars.username.id,
-      this.accessibleVars.username.value,
-    );
+  public async enterUsername(
+    value = this.accessibleVars.username.value,
+  ): Promise<void> {
+    await this.fill(this.accessibleVars.username.id, value);
   }
 
   // Enter Password
-  public async enterPassword(): Promise<void> {
-    await this.fill(
-      this.accessibleVars.password.id,
-      this.accessibleVars.password.value,
-    );
+  public async enterPassword(
+    value = this.accessibleVars.password.value,
+  ): Promise<void> {
+    await this.fill(this.accessibleVars.password.id, value);
   }
 
   // ===== CLICK FUNCTION =====
@@ -52,23 +50,16 @@ export class LoginPage extends CommonPage {
   }
 
   // ===== E2E LOGIN FUNCTION =====
-  // Login
-  public async login(): Promise<void> {
-    await this.enterUsername();
-    await this.enterPassword();
-    await this.clickToLogin();
-  }
-
-  // Login With New User
-  public async loginWithNewUser(
-    username: string,
-    password: string,
+  // Login With User
+  public async loginWithUser(
+    username?: string,
+    password?: string,
   ): Promise<void> {
     // Step 1: Enter Username
-    await this.fill(this.accessibleVars.username.id, username);
+    await this.enterUsername(username);
 
     // Step 2: Enter Password
-    await this.fill(this.accessibleVars.password.id, password);
+    await this.enterPassword(password);
 
     // Step 6: Click 'Đăng nhập' Button
     await this.clickToLogin();

@@ -15,7 +15,7 @@ export class InputField extends BasePage {
     },
   };
 
-  public accessibleVars = InputField.accessibleVariables;
+  private accessibleVars = InputField.accessibleVariables;
 
   constructor(page: Page) {
     super(page);
