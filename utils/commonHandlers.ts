@@ -1,23 +1,13 @@
-import { Page, test, expect } from "@playwright/test";
+import { Page, Locator, test, expect } from "@playwright/test";
 import { BASE_URL } from "~/routes/publicRoutes";
 import { routeVariables } from "~/constants/variables/routeVariables";
 import { userInfo } from "~/constants/userConstant";
+import { timeout } from "~/constants/timeoutConstant";
 import { CommonModal } from "~/pages/modals/CommonModal";
 import { LoadingScreen } from "~/components/LoadingScreen";
-import { TopNavigation } from "~/components/TopNavigation";
 import { HomePage } from "~/pages/main/home/HomePage";
 import { LoginPage } from "~/pages/main/LoginPage";
 import { RegisterPage } from "~/pages/main/RegisterPage";
-import { ProfilePage } from "~/pages/main/ProfilePage";
-
-// ===== VARIABLES =====
-const newUserInfo = {
-  username: userInfo.USERNAME,
-  password: userInfo.PASSWORD,
-  confirmPassword: userInfo.PASSWORD,
-  fullName: userInfo.FULL_NAME,
-  email: userInfo.EMAIL,
-};
 
 // ===== NAVIGATE FUNCTION =====
 // Go To Base URL
@@ -70,11 +60,11 @@ const createNewUser = async (
 
   // Step 2: Register New User
   await registerPage.registerNewUser(
-    newUserInfo.username,
-    newUserInfo.password,
-    newUserInfo.confirmPassword,
-    newUserInfo.fullName,
-    newUserInfo.email,
+    userInfo.USERNAME,
+    userInfo.PASSWORD,
+    userInfo.PASSWORD,
+    userInfo.FULL_NAME,
+    userInfo.EMAIL,
   );
 };
 
@@ -113,7 +103,7 @@ const loginWithNewUser = async (
   await homePage.getTopNavigation().navigateToLoginPage();
 
   // Step 4: Login With New User
-  await loginPage.loginWithNewUser(newUserInfo.username, newUserInfo.password);
+  await loginPage.loginWithUser(userInfo.USERNAME, userInfo.PASSWORD);
 
   // Step 5: Wait For The 'Đăng nhập thành công' Modal Disappear
   await commonModal.waitForModalDisappear();
@@ -137,7 +127,7 @@ const loginWithExistedAccount = async (
   // Step 3: Enter Password
   // Step 4: Click 'Đăng nhập' Button
   await test.step("Enter username and password, and then Click 'Đăng nhập' button", async () => {
-    await loginPage.login();
+    await loginPage.loginWithUser();
   });
 
   // Step 5: Wait For The 'Đăng nhập thành công' Modal Disappear
@@ -163,6 +153,7 @@ const loginOnBaseUrl = async (
 const navigateToSectionOnPage = async (
   page: Page,
   locator: string,
+  homePage: HomePage,
   navigateToSection: () => Promise<void>,
 ) => {
   // Step 1: Click The Tab From Top Navigation Bar
@@ -174,10 +165,10 @@ const navigateToSectionOnPage = async (
   // Scroll Using Playwright Instead Of Waiting For Website's JS Animations
   await section.scrollIntoViewIfNeeded();
 
-  await expect(
+  await homePage.toBeInViewportExpect(
     section,
     "Phần được chọn không có trong Viewport",
-  ).toBeInViewport();
+  );
 };
 
 // ===== OPEN NEW PAGE FUNCTION =====
@@ -190,7 +181,7 @@ const openNewPageOnBrowser = async (
   // Step 1: Click The Link Button
   const [newPage] = await Promise.all([
     // Wait For New Tab To Open
-    page.waitForEvent("popup", { timeout: 30000 }),
+    page.waitForEvent("popup", { timeout: timeout.LONG }),
 
     // Trigger Click Button
     clickLink(),
@@ -203,35 +194,50 @@ const openNewPageOnBrowser = async (
   expect(newPage.url(), "Không mở được trang ở tab mới").toBe(link);
 };
 
-// ===== UPDATE PROFILE FUNCTION =====
-// Update User Profile
-const updateProfile = async (
-  topNavigation: TopNavigation,
-  profilePage: ProfilePage,
+// ===== GET ELEMENTS LIST FUNCTION =====
+// Get All Elements List
+const getAllElements = async (
+  page: Page,
+  classNames: string,
+  textFilter?: string | RegExp,
 ) => {
-  // Step 1: Click Avatar Link To Go To Profile Page
-  await topNavigation.navigateToProfilePage(newUserInfo.fullName);
+  // Get All Elements List
+  const allEles = page.locator(classNames);
 
-  // Step 2: Enter Username
-  await profilePage.enterUsername();
+  // Wait For The First Element Is Visible
+  await allEles.first().waitFor({ state: "visible" });
 
-  // Step 3: Enter Full Name
-  await profilePage.enterFullname();
+  // Filter All Available Elements With Condition
+  const availableEles = textFilter
+    ? allEles.filter({
+        hasText: textFilter,
+      })
+    : allEles;
 
-  // Step 4: Enter Phone Number
-  await profilePage.enterPhoneNumber();
+  // Return Elements List
+  const availableElesList: Locator[] = await availableEles.all();
 
-  // Step 5: Enter Password
-  await profilePage.enterPassword();
+  return availableElesList;
+};
 
-  // Step 6: Enter Email
-  await profilePage.enterEmail();
+// Get First Elements
+const getFirstElement = async (
+  page: Page,
+  classNames: string,
+  textFilter?: string | RegExp,
+) => {
+  // Get All Elements
+  const allEles = await getAllElements(page, classNames, textFilter);
 
-  // Step 7: Select Admin Role
-  await profilePage.selectAdminRole();
+  // Return Null If Nothing Element Available
+  if (allEles.length === 0) {
+    return null;
+  }
 
-  // Step 8: Click The 'CẬP NHẬT' Button To Update Profile
-  await profilePage.clickToUpdate();
+  // Return The First Element
+  const firstEle = allEles[0];
+
+  return firstEle;
 };
 
 export {
@@ -246,5 +252,6 @@ export {
   loginOnBaseUrl,
   navigateToSectionOnPage,
   openNewPageOnBrowser,
-  updateProfile,
+  getAllElements,
+  getFirstElement,
 };

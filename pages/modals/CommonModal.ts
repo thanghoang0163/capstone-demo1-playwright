@@ -19,3 +19,4 @@ export class CommonModal extends BasePage {
     await this.lblBigTitle.waitFor({ state: "hidden" });
   }
 }
+

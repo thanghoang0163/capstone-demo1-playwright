@@ -6,7 +6,7 @@ export class LoadingScreen extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.loading = page.locator("//div[@class='jss77']");
+    this.loading = page.locator("[alt='loading']");
   }
 
   // ===== WAIT LOADING DISAPPEAR =====

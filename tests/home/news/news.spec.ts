@@ -32,7 +32,7 @@ test.describe("HOMEPAGE - NEWS SECTION", async () => {
     homePage,
   }) => {
     // Step 1: Navigate To 'Tin Tức' Section On Homepage
-    await navigateToSectionOnPage(page, news.id, () =>
+    await navigateToSectionOnPage(page, news.id, homePage, () =>
       homePage.getTopNavigation().navigateToNewsSection(),
     );
 
@@ -58,7 +58,7 @@ test.describe("HOMEPAGE - NEWS SECTION", async () => {
     await homePage.clickViewMoreButton();
 
     // Set Button Timeout
-    const buttonTimeout = 2000;
+    const buttonTimeout = 2_000;
 
     // Pause Time To View Poster Section Expand
     await page.waitForTimeout(buttonTimeout);

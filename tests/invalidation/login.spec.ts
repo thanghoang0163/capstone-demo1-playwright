@@ -1,4 +1,4 @@
-import { test, expect } from "~/fixtures/customFixtures";
+import { test } from "~/fixtures/customFixtures";
 import { generalVariables } from "~/constants/variables/generalVariables";
 import { goToLoginPage } from "~/utils/commonHandlers";
 
@@ -11,16 +11,6 @@ const inputVerification = {
     lessThanRequiredCharacters:
       generalVariables.inputField.notification.error.password
         .lessThanRequiredCharacters,
-  },
-};
-
-// User Input
-const userInput = {
-  username: {
-    id: generalVariables.userInfo.username.id,
-  },
-  password: {
-    id: generalVariables.userInfo.password.id,
   },
 };
 
@@ -51,14 +41,16 @@ test.describe("INVALIDATION - LOGIN", () => {
 
     // Step 2: Verify Empty Value In Input Fields
     // VP1: Message 'Đây là trường bắt buộc !' Displays On Username
-    const usernameMsg = await inputField.getUsernameMessageText();
-    expect(usernameMsg, "'Tài Khoản' đang chứa giá trị").toEqual(
+    await loginPage.equalExpect(
+      () => inputField.getUsernameMessageText(),
+      "'Tài Khoản' đang chứa giá trị",
       inputVerification.empty,
     );
 
     // VP2: Message 'Đây là trường bắt buộc !' Displays On Password
-    const passwordMsg = await inputField.getPasswordMessageText();
-    expect(passwordMsg, "'Mật Khẩu' đang chứa giá trị").toEqual(
+    await loginPage.equalExpect(
+      () => inputField.getPasswordMessageText(),
+      "'Tài Khoản' đang chứa giá trị",
       inputVerification.empty,
     );
   });
@@ -70,13 +62,13 @@ test.describe("INVALIDATION - LOGIN", () => {
   }) => {
     // Step 1: Enter Invalid Username
     await loginPage.fill(
-      userInput.username.id,
+      generalVariables.userInfo.username.id,
       testingVariables.invalidAccount.username,
     );
 
     // Step 2: Enter Invalid Password
     await loginPage.fill(
-      userInput.password.id,
+      generalVariables.userInfo.password.id,
       testingVariables.invalidAccount.password,
     );
 
@@ -85,8 +77,9 @@ test.describe("INVALIDATION - LOGIN", () => {
 
     // Step 4: Verify Invalid Value In Input Fields
     // VP: Message 'Tài khoản hoặc mật khẩu không đúng!' Displays
-    const usernameMsg = await inputField.getAlertMessageText();
-    expect(usernameMsg, "Tài khoản và mật khẩu đã đúng").toEqual(
+    await loginPage.equalExpect(
+      () => inputField.getAlertMessageText(),
+      "Tài khoản và mật khẩu đã đúng",
       inputVerification.incorrect,
     );
   });
@@ -98,7 +91,7 @@ test.describe("INVALIDATION - LOGIN", () => {
   }) => {
     // Step 1: Enter Invalid Password
     await loginPage.fill(
-      userInput.password.id,
+      generalVariables.userInfo.password.id,
       testingVariables.invalidPassword,
     );
 
@@ -107,8 +100,9 @@ test.describe("INVALIDATION - LOGIN", () => {
 
     // Step 3: Verify Invalid Value In Password Input Field
     // VP: Message 'Mật khẩu phải có ít nhất 6 kí tự !' Displays
-    const passwordMsg = await inputField.getPasswordMessageText();
-    expect(passwordMsg, "Mật khẩu có chứa 6 kí tự trở lên").toEqual(
+    await loginPage.equalExpect(
+      () => inputField.getPasswordMessageText(),
+      "Mật khẩu có chứa 6 kí tự trở lên",
       inputVerification.password.lessThanRequiredCharacters,
     );
   });

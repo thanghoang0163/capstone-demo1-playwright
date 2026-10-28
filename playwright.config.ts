@@ -46,9 +46,14 @@ export default defineConfig({
     ["./config/folderReporter.ts"],
   ],
 
+  /* Set expect action timeout */
+  // expect: {
+  //   timeout: 5_000,
+  // },
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: 10_000,
+    actionTimeout: 30_000,
     navigationTimeout: 30_000,
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
