@@ -54,38 +54,38 @@ export class ProfilePage extends CommonPage {
   // ===== FILL FUNCTION =====
   // Enter Username
   public async enterUsername(
-    value = this.accessibleVars.username.value,
+    username = this.accessibleVars.username.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.username.id, value);
+    await this.fill(this.accessibleVars.username.id, username);
   }
 
   // Enter Full Name
   public async enterFullName(
-    value = this.accessibleVars.fullName.value,
+    fullName = this.accessibleVars.fullName.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.fullName.id, value);
+    await this.fill(this.accessibleVars.fullName.id, fullName);
   }
 
   // Enter Phone Number
   public async enterPhoneNumber(
-    value = this.accessibleVars.phoneNumber.value,
+    phoneNumber = this.accessibleVars.phoneNumber.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.phoneNumber.id, value);
+    await this.fill(this.accessibleVars.phoneNumber.id, phoneNumber);
   }
 
   // Enter Password
 
   public async enterPassword(
-    value = this.accessibleVars.password.value,
+    password = this.accessibleVars.password.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.password.id, value);
+    await this.fill(this.accessibleVars.password.id, password);
   }
 
   // Enter Email
   public async enterEmail(
-    value = this.accessibleVars.email.value,
+    email = this.accessibleVars.email.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.email.id, value);
+    await this.fill(this.accessibleVars.email.id, email);
   }
 
   // Select Customer Role

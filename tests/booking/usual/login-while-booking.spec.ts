@@ -3,15 +3,18 @@ import { selectMovieInfo, loginWhileBooking } from "~/utils/bookingHandlers";
 import { registerNewUserBeforeTesting } from "~/utils/commonHandlers";
 
 // ===== BEFORE EACH =====
-test.beforeEach(async ({ page, loadingScreen, homePage, registerPage }) => {
-  // Step 1: Register Before Selecting Movie
-  await registerNewUserBeforeTesting(
-    page,
-    loadingScreen,
-    homePage,
-    registerPage,
-  );
-});
+test.beforeEach(
+  async ({ page, loadingScreen, commonModal, homePage, registerPage }) => {
+    // Step 1: Register Before Selecting Movie
+    await registerNewUserBeforeTesting(
+      page,
+      commonModal,
+      loadingScreen,
+      homePage,
+      registerPage,
+    );
+  },
+);
 
 // ===== TEST STEPS =====
 test.describe("LOG IN WHILE BOOKING", async () => {

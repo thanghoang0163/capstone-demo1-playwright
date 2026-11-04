@@ -31,16 +31,16 @@ export class LoginPage extends CommonPage {
   // ===== FILL FUNCTION =====
   // Enter Username
   public async enterUsername(
-    value = this.accessibleVars.username.value,
+    username = this.accessibleVars.username.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.username.id, value);
+    await this.fill(this.accessibleVars.username.id, username);
   }
 
   // Enter Password
   public async enterPassword(
-    value = this.accessibleVars.password.value,
+    password = this.accessibleVars.password.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.password.id, value);
+    await this.fill(this.accessibleVars.password.id, password);
   }
 
   // ===== CLICK FUNCTION =====

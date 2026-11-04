@@ -1,14 +1,13 @@
-import { routeVariables } from "~/constants/variables/routeVariables";
-import { fetchApi } from "~/utils/apiHandlers";
+import { MOVIE_ENDPOINTS } from "~/apis/apisRoutes";
+import { getApi } from "~/utils/apiHandlers";
 
-const groupCode = "GP09";
-const movieAPIPath = `QuanLyPhim/LayDanhSachPhim?maNhom=${groupCode}`;
-
-const movieEndpoint = routeVariables.APIUrl + movieAPIPath;
-
-// ===== MOVIE API =====
+// ===== API =====
+// Movie List
 export const getMovieList = async () => {
-  return await fetchApi(movieEndpoint, {
-    method: "GET",
-  });
+  return await getApi(MOVIE_ENDPOINTS.list);
+};
+
+// Movie Detail
+export const getMovieInfo = async (movieId: number) => {
+  return await getApi(MOVIE_ENDPOINTS.info(movieId));
 };

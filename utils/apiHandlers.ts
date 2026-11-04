@@ -13,6 +13,10 @@ interface FetchApiOptions {
   timeout?: number;
 }
 
+// Options Of Method Helpers (method Is Fixed By The Helper)
+type MethodOptions = Omit<FetchApiOptions, "method" | "data">;
+type MethodOptionsWithBody = Omit<FetchApiOptions, "method">;
+
 // ===== FETCH API FUNCTION =====
 export const fetchApi = async <T = unknown>(
   url: string,
@@ -43,3 +47,44 @@ export const fetchApi = async <T = unknown>(
     }
   }
 };
+
+// ===== METHOD HELPERS =====
+// GET
+export const getApi = <T = unknown>(
+  url: string,
+  options: MethodOptions = {},
+  request?: APIRequestContext,
+): Promise<T> => fetchApi<T>(url, { ...options, method: "GET" }, request);
+
+// POST
+export const postApi = <T = unknown>(
+  url: string,
+  data?: unknown,
+  options: MethodOptionsWithBody = {},
+  request?: APIRequestContext,
+): Promise<T> =>
+  fetchApi<T>(url, { ...options, method: "POST", data }, request);
+
+// PUT
+export const putApi = <T = unknown>(
+  url: string,
+  data?: unknown,
+  options: MethodOptionsWithBody = {},
+  request?: APIRequestContext,
+): Promise<T> => fetchApi<T>(url, { ...options, method: "PUT", data }, request);
+
+// PATCH
+export const patchApi = <T = unknown>(
+  url: string,
+  data?: unknown,
+  options: MethodOptionsWithBody = {},
+  request?: APIRequestContext,
+): Promise<T> =>
+  fetchApi<T>(url, { ...options, method: "PATCH", data }, request);
+
+// DELETE
+export const deleteApi = <T = unknown>(
+  url: string,
+  options: MethodOptionsWithBody = {},
+  request?: APIRequestContext,
+): Promise<T> => fetchApi<T>(url, { ...options, method: "DELETE" }, request);

@@ -46,37 +46,37 @@ export class RegisterPage extends CommonPage {
   // ===== FILL FUNCTION =====
   // Enter Username
   public async enterUsername(
-    value = this.accessibleVars.username.value,
+    username = this.accessibleVars.username.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.username.id, value);
+    await this.fill(this.accessibleVars.username.id, username);
   }
 
   // Enter Password
   public async enterPassword(
-    value = this.accessibleVars.password.value,
+    password = this.accessibleVars.password.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.password.id, value);
+    await this.fill(this.accessibleVars.password.id, password);
   }
 
   // Enter Confirm Password
   public async enterConfirmPassword(
-    value = this.accessibleVars.confirmPassword.value,
+    confirmPassword = this.accessibleVars.confirmPassword.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.confirmPassword.id, value);
+    await this.fill(this.accessibleVars.confirmPassword.id, confirmPassword);
   }
 
   // Enter Full Name
   public async enterFullName(
-    value = this.accessibleVars.fullName.value,
+    fullName = this.accessibleVars.fullName.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.fullName.id, value);
+    await this.fill(this.accessibleVars.fullName.id, fullName);
   }
 
   // Enter Email
   public async enterEmail(
-    value = this.accessibleVars.email.value,
+    email = this.accessibleVars.email.value,
   ): Promise<void> {
-    await this.fill(this.accessibleVars.email.id, value);
+    await this.fill(this.accessibleVars.email.id, email);
   }
 
   // ===== CLICK FUNCTION=====
@@ -111,6 +111,5 @@ export class RegisterPage extends CommonPage {
 
     // Step 6: Click 'Đăng ký' Button
     await this.clickToRegister();
-
   }
 }
