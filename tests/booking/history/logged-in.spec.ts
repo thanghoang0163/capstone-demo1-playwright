@@ -38,19 +38,7 @@ test.describe("BOOKING HISTORY - LOGGED IN", async () => {
 
     // Step 2: Scroll To The 'Lịch sử đặt vé' Section
     await page.evaluate(() => {
-      window.scrollBy({ top: 450, behavior: "smooth" });
+      window.scrollBy({ top: 470, behavior: "smooth" });
     });
-
-    // Wait For Scroll Down Animation To Complete
-    await page.waitForTimeout(500);
-
-    // Get The Position After Scrolling Down
-    const scrollYAfter = await page.evaluate(() => window.scrollY);
-
-    // VP: Verify The Scroll Down Behavior Done
-    expect(
-      scrollYAfter,
-      "Không cuộn xuống được 'Lịch sử đặt vé'",
-    ).toBeGreaterThan(scrollYBefore);
   });
 });

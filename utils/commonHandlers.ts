@@ -3,6 +3,11 @@ import { BASE_URL } from "~/routes/publicRoutes";
 import { routeVariables } from "~/constants/variables/routeVariables";
 import { userInfo } from "~/constants/userConstant";
 import { timeout } from "~/constants/timeoutConstant";
+import {
+  generateUsername,
+  generateFullName,
+  generatePassword,
+} from "~/utils/userHandlers";
 import { CommonModal } from "~/pages/modals/CommonModal";
 import { LoadingScreen } from "~/components/LoadingScreen";
 import { HomePage } from "~/pages/main/home/HomePage";
@@ -56,6 +61,11 @@ const createNewUser = async (
   homePage: HomePage,
   registerPage: RegisterPage,
 ) => {
+  userInfo.USERNAME = generateUsername();
+  userInfo.PASSWORD = generatePassword();
+  userInfo.FULL_NAME = generateFullName();
+  userInfo.EMAIL = `${generateUsername()}@gmail.com`;
+
   // Step 1: Go To Register Page
   await goToRegisterPage(page, homePage);
 
@@ -68,11 +78,8 @@ const createNewUser = async (
     userInfo.EMAIL,
   );
 
-  // Step 3: Wait For The 'Đăng ký thành công' Modal Disappear
-  await page.waitForTimeout(1_000);
-
-  //
-  // await commonModal.waitForModalDisappear();
+  // Wait For The 'Đăng ký thành công' Modal Disappear
+  await commonModal.waitForModalDisappear();
 };
 
 // ===== REGISTER =====

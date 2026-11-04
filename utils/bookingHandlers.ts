@@ -22,18 +22,12 @@ import { HomePage } from "~/pages/main/home/HomePage";
 import { RegisterPage } from "~/pages/main/RegisterPage";
 
 // ===== VARIABLES =====
-const newUserInfo = {
-  username: userInfo.USERNAME,
-  password: userInfo.PASSWORD,
-  confirmPassword: userInfo.PASSWORD,
-  fullName: userInfo.FULL_NAME,
-  email: userInfo.EMAIL,
-};
-
+// Cinemas
 const cinemas = {
   id: "#cumRap",
 };
 
+// Notification
 const notification = {
   login: {
     success: generalVariables.login.success,
@@ -196,7 +190,7 @@ const selectCinemaPlaceAndShowtime = async (
 
   // Get Cinema Show Time
   const cinemaShowTime = formatCinemaTime(
-    cinemaBranch.danhSachPhim[0].lstLichChieuTheoPhim[0].ngayChieuGioChieu,
+    cinemaBranch.danhSachPhim[1].lstLichChieuTheoPhim[0].ngayChieuGioChieu,
   );
 
   // Step 1: Scroll Down To Cinema Section On Homepage
@@ -269,11 +263,6 @@ const selectCinemaPlaceAndShowtimeWithLoggedIn = async (
     registerPage,
     loginPage,
   );
-
-  // await loginOnBaseUrl(page, commonModal, homePage, loginPage);
-
-  // Wait For Scroll Down Animation To Complete
-  await page.waitForTimeout(4_000);
 
   // Step 2: Select Place And Showtime From Cinema Section
   await selectCinemaPlaceAndShowtime(page, homePage, bookingPage);
@@ -401,7 +390,7 @@ const loginWhileBooking = async (
   await bookingPage.clickToLogIn();
 
   // Step 4: Login With Existed Account
-  await loginPage.loginWithUser(newUserInfo.username, newUserInfo.password);
+  await loginPage.loginWithUser(userInfo.USERNAME, userInfo.PASSWORD);
 
   // Step 5: Verify User Login Successfully
   // VP: Message 'Đăng nhập thành công' Displays

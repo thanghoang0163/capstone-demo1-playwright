@@ -18,6 +18,15 @@ export class CommonModal extends BasePage {
 
   // ===== WAIT FOR MODAL DISAPPEAR =====
   public async waitForModalDisappear(): Promise<void> {
+    // Wait For The Modal Attached
+    await this.waitForModalAttached();
+
+    // Wait For The Modal Disappear
     await this.lblBigTitle.waitFor({ state: "hidden" });
+  }
+
+  // ===== WAIT FOR MODAL ATTACHED =====
+  public async waitForModalAttached(): Promise<void> {
+    await this.modal.waitFor({ state: "attached" });
   }
 }
