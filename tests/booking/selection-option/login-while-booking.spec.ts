@@ -7,10 +7,18 @@ import {
 
 // ===== BEFORE EACH =====
 test.beforeEach(
-  async ({ page, loadingScreen, homePage, registerPage, bookingPage }) => {
+  async ({
+    page,
+    loadingScreen,
+    commonModal,
+    homePage,
+    registerPage,
+    bookingPage,
+  }) => {
     // Select Movie From The 'Select Option' Component On Homepage As Guest
     await registerBeforeSelectingMovieFromSelectOption(
       page,
+      commonModal,
       loadingScreen,
       homePage,
       registerPage,

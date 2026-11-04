@@ -3,10 +3,12 @@ import { BasePage } from "~/pages/base/BasePage";
 
 export class CommonModal extends BasePage {
   private lblBigTitle: Locator;
+  private modal: Locator;
 
   constructor(page: Page) {
     super(page);
     this.lblBigTitle = page.locator("#swal2-title");
+    this.modal = page.locator(".swal2-modal");
   }
 
   // ===== GET MESSAGE TEXT =====
@@ -19,4 +21,3 @@ export class CommonModal extends BasePage {
     await this.lblBigTitle.waitFor({ state: "hidden" });
   }
 }
-

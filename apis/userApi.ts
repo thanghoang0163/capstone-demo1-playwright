@@ -1,13 +1,6 @@
 import { APIRequestContext } from "@playwright/test";
-import { routeVariables } from "~/constants/variables/routeVariables";
-import { fetchApi } from "~/utils/apiHandlers";
-
-// ===== ENDPOINTS =====
-// Login Endpoint
-const loginEndpoint = routeVariables.APIUrl + "QuanLyNguoiDung/DangNhap";
-
-// Register Endpoint
-const registerEndpoint = routeVariables.APIUrl + "QuanLyNguoiDung/DangKy";
+import { USER_ENDPOINTS } from "~/apis/apisRoutes";
+import { postApi } from "~/utils/apiHandlers";
 
 // ===== INTERFACES =====
 // User Register Request Interface
@@ -27,32 +20,19 @@ interface UserLoginRequest {
   matKhau: string;
 }
 
-// ===== REGISTER API =====
+// ===== API =====
+// Register
 export const registerRequest = async (
   body: UserRegisterRequest,
   request: APIRequestContext,
 ) => {
-  return await fetchApi(
-    registerEndpoint,
-    {
-      method: "POST",
-      data: body,
-    },
-    request,
-  );
+  return await postApi(USER_ENDPOINTS.register, body, {}, request);
 };
 
-// ===== LOGIN API =====
+// Login
 export const loginRequest = async (
   body: UserLoginRequest,
   request: APIRequestContext,
 ) => {
-  return await fetchApi(
-    loginEndpoint,
-    {
-      method: "POST",
-      data: body,
-    },
-    request,
-  );
+  return await postApi(USER_ENDPOINTS.login, body, {}, request);
 };

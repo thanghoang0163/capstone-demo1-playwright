@@ -5,30 +5,16 @@ import { CommonPage } from "~/pages/base/CommonPage";
 export class BookingPage extends CommonPage {
   // ===== DEFINE VARIABLES =====
   static readonly accessibleVariables = {
-    // Cinema
-    cinema: {
-      name: "lotte-cinema",
-      place: "Lotte - Thủ Đức L2-Joy",
-      showTime: "-12-2021  ~  12:00",
-    },
-    // Movie
-    movie: {
-      name: "C18The Gentlemen DangbkQuý ô",
-      showTime: "-07-2026  ~  20:00",
-    },
     // Select Option
     selectOption: {
       movie: {
         label: "film",
-        option: "10531",
       },
       cinema: {
         label: "cinema",
-        option: "bhd-star-cineplex-3-2",
       },
       showTime: {
         label: "date",
-        option: "46258",
       },
     },
     // Button
@@ -49,8 +35,8 @@ export class BookingPage extends CommonPage {
 
   // ===== CLICK FUNCTION =====
   // Select A Movie On Homepage
-  public async selectMovie(): Promise<void> {
-    await this.clickHrefFilter(this.accessibleVars.movie.name);
+  public async selectMovie(movieName: string): Promise<void> {
+    await this.clickHrefFilter(movieName);
   }
 
   // Scroll Down To The Show Time On Cinema
@@ -59,8 +45,8 @@ export class BookingPage extends CommonPage {
   }
 
   // Select The Show Time
-  public async selectShowTime(): Promise<void> {
-    await this.clickByText(this.accessibleVars.movie.showTime);
+  public async selectMovieShowTime(movieShowTime: string): Promise<void> {
+    await this.clickByText(movieShowTime);
   }
 
   // Click The 'ĐẶT VÉ' Button To Booking
@@ -84,42 +70,42 @@ export class BookingPage extends CommonPage {
   }
 
   // Click To Select Cinema On Homepage
-  public async selectCinema(): Promise<void> {
-    await this.clickTabRole(this.accessibleVars.cinema.name);
+  public async selectCinema(cinemaAlias: string): Promise<void> {
+    await this.clickTabRole(cinemaAlias);
   }
 
   // Click To Select Cinema Place On Homepage
-  public async selectCinemaPlace(): Promise<void> {
-    await this.clickTabRole(this.accessibleVars.cinema.place);
+  public async selectCinemaPlace(cinemaPlace: string): Promise<void> {
+    await this.clickTabRole(cinemaPlace);
   }
 
   // Click To Select Cinema Showtime On Homepage
-  public async selectCinemaShowtime(): Promise<void> {
-    await this.clickLinkRoleWithoutExact(this.accessibleVars.cinema.showTime);
+  public async selectCinemaShowtime(cinemaShowTime: string): Promise<void> {
+    await this.clickLinkRoleWithoutExact(cinemaShowTime);
   }
 
   // ===== SELECT OPTION FUNCTION =====
   // Select A Movie From 'Select Option' Component On Homepage
-  public async selectMovieOption(): Promise<void> {
+  public async selectMovieOption(movieId: string): Promise<void> {
     await this.selectOption(
       this.accessibleVars.selectOption.movie.label,
-      this.accessibleVars.selectOption.movie.option,
+      movieId,
     );
   }
 
   // Select Cinema From 'Select Option' Component On Homepage
-  public async selectCinemaOption(): Promise<void> {
+  public async selectCinemaOption(cinemaId: string): Promise<void> {
     await this.selectOption(
       this.accessibleVars.selectOption.cinema.label,
-      this.accessibleVars.selectOption.cinema.option,
+      cinemaId,
     );
   }
 
   // Select Show Time From 'Select Option' Component On Homepage
-  public async selectShowTimeOption(): Promise<void> {
+  public async selectShowTimeOption(showTimeId: string): Promise<void> {
     await this.selectOption(
       this.accessibleVars.selectOption.showTime.label,
-      this.accessibleVars.selectOption.showTime.option,
+      showTimeId,
     );
   }
 }

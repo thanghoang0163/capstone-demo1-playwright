@@ -1,13 +1,23 @@
-import { routeVariables } from "~/constants/variables/routeVariables";
-import { fetchApi } from "~/utils/apiHandlers";
+import { CINEMA_ENDPOINTS } from "~/apis/apisRoutes";
+import { getApi } from "~/utils/apiHandlers";
 
-const cinemaAPIPath = "QuanLyRap/LayThongTinHeThongRap";
-
-const cinemaEndpoint = routeVariables.APIUrl + cinemaAPIPath;
-
-// ===== CINEMA API =====
+// ===== API =====
+// Cinema System List
 export const getCinemaList = async () => {
-  return await fetchApi(cinemaEndpoint, {
-    method: "GET",
-  });
+  return await getApi(CINEMA_ENDPOINTS.list);
+};
+
+// Cinema System Showtimes
+export const getCinemaSchedule = async (cinemaId: string) => {
+  return await getApi(CINEMA_ENDPOINTS.schedule(cinemaId));
+};
+
+// Cinema Branches by System
+export const getCinemaBranchInfo = async (cinemaId: string) => {
+  return await getApi(CINEMA_ENDPOINTS.branchInfo(cinemaId));
+};
+
+// Showtimes Of A Movie
+export const getMovieShowTimes = async (movieId: number) => {
+  return await getApi(CINEMA_ENDPOINTS.movieShowTimes(movieId));
 };

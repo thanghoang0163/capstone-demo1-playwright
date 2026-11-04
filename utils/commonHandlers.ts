@@ -52,6 +52,7 @@ const goToRegisterPage = async (page: Page, homePage: HomePage) => {
 // Create New User
 const createNewUser = async (
   page: Page,
+  commonModal: CommonModal,
   homePage: HomePage,
   registerPage: RegisterPage,
 ) => {
@@ -66,18 +67,25 @@ const createNewUser = async (
     userInfo.FULL_NAME,
     userInfo.EMAIL,
   );
+
+  // Step 3: Wait For The 'Đăng ký thành công' Modal Disappear
+  await page.waitForTimeout(1_000);
+
+  //
+  // await commonModal.waitForModalDisappear();
 };
 
 // ===== REGISTER =====
 // Register New User Before Testing
 const registerNewUserBeforeTesting = async (
   page: Page,
+  commonModal: CommonModal,
   loadingScreen: LoadingScreen,
   homePage: HomePage,
   registerPage: RegisterPage,
 ) => {
   // Step 1: Create New User
-  await createNewUser(page, homePage, registerPage);
+  await createNewUser(page, commonModal, homePage, registerPage);
 
   // Step 2: Go To Base URL And Wait For The Loading Screen Disappear
   await waitForLoadingDisappearOnBaseUrl(page, loadingScreen);
@@ -94,10 +102,10 @@ const loginWithNewUser = async (
   loginPage: LoginPage,
 ) => {
   // Step 1: Create New User
-  await createNewUser(page, homePage, registerPage);
+  await createNewUser(page, commonModal, homePage, registerPage);
 
   // Step 2: Wait For The 'Đăng ký thành công' Modal Disappear
-  await commonModal.waitForModalDisappear();
+  // await commonModal.waitForModalDisappear();
 
   // Step 3: Go To Login Page
   await homePage.getTopNavigation().navigateToLoginPage();
@@ -240,6 +248,15 @@ const getFirstElement = async (
   return firstEle;
 };
 
+// ===== TIME FUNCTION =====
+// Format Cinema Time From ISO Date To "DD-MM-YYYY ~ HH:MM" Format
+const formatCinemaTime = (isoDate: string): string => {
+  const [date, time] = isoDate.split("T");
+  const [year, month, day] = date.split("-");
+
+  return `-${month}-${year} ~ ${time.slice(0, 5)}`;
+};
+
 export {
   goToBaseUrl,
   waitForLoadingDisappearOnBaseUrl,
@@ -254,4 +271,5 @@ export {
   openNewPageOnBrowser,
   getAllElements,
   getFirstElement,
+  formatCinemaTime,
 };
