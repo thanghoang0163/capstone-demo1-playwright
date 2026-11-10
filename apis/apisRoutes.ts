@@ -50,7 +50,7 @@ const QUERY_PARAMS = {
 
 // ===== ENDPOINTS =====
 // Cinema
-const CINEMA_URL = `${API_BASE_URL}/${SERVICE_PATHS.cinemas}`;
+const CINEMA_URL = API_BASE_URL + SERVICE_PATHS.cinemas;
 
 const CINEMA_ENDPOINTS = {
   list: `${CINEMA_URL}/${ACTIONS.cinema.system.info}`,
@@ -63,7 +63,7 @@ const CINEMA_ENDPOINTS = {
 } as const;
 
 // Movie
-const MOVIE_URL = `${API_BASE_URL}/${SERVICE_PATHS.movies}`;
+const MOVIE_URL = API_BASE_URL + SERVICE_PATHS.movies;
 
 const MOVIE_ENDPOINTS = {
   list: `${MOVIE_URL}/${ACTIONS.movie.list}?${QUERY_PARAMS.groupCode}=${GROUP_CODE}`,
@@ -72,7 +72,7 @@ const MOVIE_ENDPOINTS = {
 } as const;
 
 // Booking
-const BOOKING_URL = `${API_BASE_URL}/${SERVICE_PATHS.booking}`;
+const BOOKING_URL = API_BASE_URL + SERVICE_PATHS.booking;
 
 const BOOKING_ENDPOINTS = {
   seatInfo: (showTimeId: number) =>
@@ -80,7 +80,7 @@ const BOOKING_ENDPOINTS = {
 } as const;
 
 // User
-const USER_URL = `${API_BASE_URL}/${SERVICE_PATHS.users}`;
+const USER_URL = API_BASE_URL + SERVICE_PATHS.users;
 
 const USER_ENDPOINTS = {
   login: `${USER_URL}/${ACTIONS.user.login}`,
