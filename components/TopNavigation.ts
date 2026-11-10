@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { BasePage } from "~/pages/base/BasePage";
 import { generalVariables } from "~/constants/variables/generalVariables";
 
@@ -43,16 +42,10 @@ export class TopNavigation extends BasePage {
 
   private accessibleVars = TopNavigation.accessibleVariables;
 
-  constructor(page: Page) {
-    super(page);
-  }
-
   // ===== NAVIGATE FUNCTION =====
   // Navigate to Home Page
   public async navigateToHomePage(): Promise<void> {
-    // await this.clickByRole("img", this.accessibleVars.logo.name, true);
-
-    await this.page.getByRole("img", { name: "Logo", exact: true }).click();
+    await this.clickByRole("img", this.accessibleVars.logo.name, true);
   }
 
   // Navigate To Login Page
@@ -87,22 +80,13 @@ export class TopNavigation extends BasePage {
 
   // Navigate To Profile Page
   public async navigateToProfilePage(fullName: string): Promise<void> {
-    await this.clickLinkRole(this.accessibleVars.link.profile + " " + fullName);
+    await this.clickLinkRole(`${this.accessibleVars.link.profile} ${fullName}`);
   }
 
   // ===== LOGOUT FUNCTION =====
   // Click To Logout
   public async clickToLogout(): Promise<void> {
     await this.clickLinkRole(this.accessibleVars.logout.button);
-  }
-
-  // Wait For Confirm Logout Popup Appear
-  public async waitForConfirmLogoutPopupAppear(): Promise<void> {
-    await this.page
-      .getByRole("heading", { name: this.accessibleVars.logout.confirmPopup })
-      .waitFor({
-        state: "visible",
-      });
   }
 
   // Accept Logout
@@ -115,12 +99,13 @@ export class TopNavigation extends BasePage {
     await this.clickButtonRole(this.accessibleVars.button.cancel);
   }
 
+  // Wait For Confirm Logout Popup Appear
+  public async waitForConfirmLogoutPopupAppear(): Promise<void> {
+    await this.waitForElementAppear(this.accessibleVars.logout.confirmPopup);
+  }
+
   // Wait For success Logout Popup Appear
   public async waitForSuccessLogoutPopupAppear(): Promise<void> {
-    await this.page
-      .getByRole("heading", { name: this.accessibleVars.logout.successPopup })
-      .waitFor({
-        state: "visible",
-      });
+    await this.waitForElementAppear(this.accessibleVars.logout.successPopup);
   }
 }

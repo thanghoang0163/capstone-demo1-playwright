@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { BasePage } from "~/pages/base/BasePage";
 
 export class InputField extends BasePage {
@@ -16,10 +15,6 @@ export class InputField extends BasePage {
   };
 
   private accessibleVars = InputField.accessibleVariables;
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   // ===== GET MESSAGE TEXT =====
   // Get Username Message Text

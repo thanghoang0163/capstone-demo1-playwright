@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { BasePage } from "~/pages/base/BasePage";
 
 export class NewsSection extends BasePage {
@@ -31,10 +30,6 @@ export class NewsSection extends BasePage {
   };
 
   private accessibleVars = NewsSection.accessibleVariables;
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   // ===== CLICK FUNCTION =====
   // Click 'XEM THÊM' Button

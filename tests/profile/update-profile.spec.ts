@@ -1,11 +1,6 @@
 import { test } from "~/fixtures/customFixtures";
-import { userInfo } from "~/constants/userConstant";
 import { profileVariables } from "~/constants/variables/profileVariables";
-import {
-  loginWithNewUser,
-  goToBaseUrl,
-  loginOnBaseUrl,
-} from "~/utils/commonHandlers";
+import { goToBaseUrl } from "~/utils/commonHandlers";
 
 // ===== VARIABLES =====
 // Notification
@@ -14,40 +9,31 @@ const notification = {
 };
 
 // ===== BEFORE EACH =====
-test.beforeEach(
-  async ({
-    page,
-    commonModal,
-    loadingScreen,
-    homePage,
-    registerPage,
-    loginPage,
-  }) => {
-    // Login With New User
-    // await loginWithNewUser(
-    //   page,
-    //   commonModal,
-    //   loadingScreen,
-    //   homePage,
-    //   registerPage,
-    //   loginPage,
-    // );
+test.beforeEach(async ({ page, homePage, loginPage }) => {
+  // Login With New User
+  // await loginWithNewUser(
+  //   page,
+  //   commonModal,
+  //   loadingScreen,
+  //   homePage,
+  //   registerPage,
+  //   loginPage,
+  // );
 
-    // Go To Base Url
-    await goToBaseUrl(page);
+  // Go To Base Url
+  await goToBaseUrl(page);
 
-    // Go To Login Page
-    await homePage.getTopNavigation().navigateToLoginPage();
+  // Go To Login Page
+  await homePage.getTopNavigation().navigateToLoginPage();
 
-    // Step 2: Enter Username Name
-    // Step 3: Enter Password
-    // Step 4: Click 'Đăng nhập' Button
-    await loginPage.loginWithUser(
-      profileVariables.update.usernameTest,
-      profileVariables.update.passwordTest,
-    );
-  },
-);
+  // Step 2: Enter Username Name
+  // Step 3: Enter Password
+  // Step 4: Click 'Đăng nhập' Button
+  await loginPage.loginWithUser(
+    profileVariables.update.usernameTest,
+    profileVariables.update.passwordTest,
+  );
+});
 
 // ===== TEST STEPS =====
 test.describe("UPDATE PROFILE", async () => {
@@ -95,7 +81,7 @@ test.describe("UPDATE PROFILE", async () => {
     // Step 8: Click The 'CẬP NHẬT' Button To Update Profile
     await profilePage.clickToUpdate();
 
-    // Step 2: Verify User Logs Out Successfully
+    // Step 9: Verify Update Profile Successfully
     // VP: Message 'Cập nhật thành công' Displays
     await profilePage.equalExpect(
       () => commonModal.getMessageText(),

@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { generalVariables } from "~/constants/variables/generalVariables";
 import { CommonPage } from "~/pages/base/CommonPage";
 
@@ -28,10 +27,6 @@ export class BookingPage extends CommonPage {
   };
 
   private accessibleVars = BookingPage.accessibleVariables;
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   // ===== CLICK FUNCTION =====
   // Select A Movie On Homepage

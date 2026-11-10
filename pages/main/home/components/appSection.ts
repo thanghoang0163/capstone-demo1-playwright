@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { BasePage } from "~/pages/base/BasePage";
 
 export class AppSection extends BasePage {
@@ -8,10 +7,6 @@ export class AppSection extends BasePage {
   };
 
   private accessibleVars = AppSection.accessibleVariables;
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   // ===== CLICK FUNCTION =====
   // Click Download App Button
