@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { CommonPage } from "~/pages/base/CommonPage";
 import { userInfo } from "~/constants/userConstant";
 import { generalVariables } from "~/constants/variables/generalVariables";
@@ -38,10 +37,6 @@ export class RegisterPage extends CommonPage {
   };
 
   private accessibleVars = RegisterPage.accessibleVariables;
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   // ===== FILL FUNCTION =====
   // Enter Username

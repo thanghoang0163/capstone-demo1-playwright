@@ -33,9 +33,6 @@ test.describe("BOOKING HISTORY - LOGGED IN", async () => {
       "Không tìm thấy lịch sử đặt vé nào",
     );
 
-    // Get The Page's Initial Position
-    const scrollYBefore = await page.evaluate(() => window.scrollY);
-
     // Step 2: Scroll To The 'Lịch sử đặt vé' Section
     await page.evaluate(() => {
       window.scrollBy({ top: 470, behavior: "smooth" });

@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { generalVariables } from "~/constants/variables/generalVariables";
 import { profileVariables } from "~/constants/variables/profileVariables";
 import { CommonPage } from "~/pages/base/CommonPage";
@@ -47,10 +46,6 @@ export class ProfilePage extends CommonPage {
 
   private accessibleVars = ProfilePage.accessibleVariables;
 
-  constructor(page: Page) {
-    super(page);
-  }
-
   // ===== FILL FUNCTION =====
   // Enter Username
   public async enterUsername(
@@ -74,7 +69,6 @@ export class ProfilePage extends CommonPage {
   }
 
   // Enter Password
-
   public async enterPassword(
     password = this.accessibleVars.password.value,
   ): Promise<void> {
@@ -137,7 +131,7 @@ export class ProfilePage extends CommonPage {
     // Step 6: Select Admin Role
     await this.selectAdminRole();
 
-    // Step 7: Click 'Đăng ký' Button
+    // Step 7: Click 'CẬP NHẬT' Button
     await this.clickToUpdate();
   }
 }

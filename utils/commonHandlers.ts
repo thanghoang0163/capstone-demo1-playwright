@@ -1,4 +1,4 @@
-import { Page, Locator, test, expect } from "@playwright/test";
+import { Page, test, expect } from "@playwright/test";
 import { BASE_URL } from "~/routes/publicRoutes";
 import { routeVariables } from "~/constants/variables/routeVariables";
 import { userInfo } from "~/constants/userConstant";
@@ -64,7 +64,7 @@ const createNewUser = async (
   userInfo.USERNAME = generateUsername();
   userInfo.PASSWORD = generatePassword();
   userInfo.FULL_NAME = generateFullName();
-  userInfo.EMAIL = `${generateUsername()}@gmail.com`;
+  userInfo.EMAIL = `${userInfo.USERNAME}@gmail.com`;
 
   // Step 1: Go To Register Page
   await goToRegisterPage(page, homePage);
@@ -209,52 +209,6 @@ const openNewPageOnBrowser = async (
   expect(newPage.url(), "Không mở được trang ở tab mới").toBe(link);
 };
 
-// ===== GET ELEMENTS LIST FUNCTION =====
-// Get All Elements List
-const getAllElements = async (
-  page: Page,
-  classNames: string,
-  textFilter?: string | RegExp,
-) => {
-  // Get All Elements List
-  const allEles = page.locator(classNames);
-
-  // Wait For The First Element Is Visible
-  await allEles.first().waitFor({ state: "visible" });
-
-  // Filter All Available Elements With Condition
-  const availableEles = textFilter
-    ? allEles.filter({
-        hasText: textFilter,
-      })
-    : allEles;
-
-  // Return Elements List
-  const availableElesList: Locator[] = await availableEles.all();
-
-  return availableElesList;
-};
-
-// Get First Elements
-const getFirstElement = async (
-  page: Page,
-  classNames: string,
-  textFilter?: string | RegExp,
-) => {
-  // Get All Elements
-  const allEles = await getAllElements(page, classNames, textFilter);
-
-  // Return Null If Nothing Element Available
-  if (allEles.length === 0) {
-    return null;
-  }
-
-  // Return The First Element
-  const firstEle = allEles[0];
-
-  return firstEle;
-};
-
 // ===== TIME FUNCTION =====
 // Format Cinema Time From ISO Date To "DD-MM-YYYY ~ HH:MM" Format
 const formatCinemaTime = (isoDate: string): string => {
@@ -276,7 +230,5 @@ export {
   loginOnBaseUrl,
   navigateToSectionOnPage,
   openNewPageOnBrowser,
-  getAllElements,
-  getFirstElement,
   formatCinemaTime,
 };

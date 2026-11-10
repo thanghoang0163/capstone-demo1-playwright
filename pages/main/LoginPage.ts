@@ -1,4 +1,3 @@
-import { Page } from "@playwright/test";
 import { generalVariables } from "~/constants/variables/generalVariables";
 import { userVariables } from "~/constants/variables/userVariables";
 import { CommonPage } from "~/pages/base/CommonPage";
@@ -23,10 +22,6 @@ export class LoginPage extends CommonPage {
   };
 
   private accessibleVars = LoginPage.accessibleVariables;
-
-  constructor(page: Page) {
-    super(page);
-  }
 
   // ===== FILL FUNCTION =====
   // Enter Username
@@ -61,7 +56,7 @@ export class LoginPage extends CommonPage {
     // Step 2: Enter Password
     await this.enterPassword(password);
 
-    // Step 6: Click 'Đăng nhập' Button
+    // Step 3: Click 'Đăng nhập' Button
     await this.clickToLogin();
   }
 }

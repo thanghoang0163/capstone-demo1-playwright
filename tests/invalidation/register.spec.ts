@@ -163,7 +163,7 @@ test.describe("INVALIDATION - REGISTER", () => {
     // Step 6: Click 'Đăng ký' Button
     await registerPage.clickToRegister();
 
-    // Step 7: Verify Existed Value In Email Input Field
+    // Step 7: Verify Existed Value In Username Input Field
     // VP: Message 'Tài khoản đã tồn tại!' Displays
     await registerPage.equalExpect(
       () => inputField.getAlertMessageText(),

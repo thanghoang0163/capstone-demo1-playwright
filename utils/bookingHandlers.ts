@@ -296,7 +296,7 @@ const getFirstAvailableSeat = async (page: Page) => {
   const availableSeatsList = await getAllAvailableSeats(page);
 
   // Return Null If Nothing Seat Available
-  if (availableSeatsList.length == 0) {
+  if (availableSeatsList.length === 0) {
     return null;
   }
 
@@ -402,8 +402,8 @@ const loginWhileBooking = async (
 };
 
 // ===== GUEST BOOKING FUNCTION =====
-// Guest Booking
-const guestBooking = async (
+// Verify Booking As Guest
+const verifyBookingAsGuest = async (
   page: Page,
   commonModal: CommonModal,
   bookingPage: BookingPage,
@@ -420,22 +420,9 @@ const guestBooking = async (
     notification.login.error,
   );
 };
-
-// Verify Booking As Guest
-const verifyBookingAsGuest = async (
-  page: Page,
-  commonModal: CommonModal,
-  bookingPage: BookingPage,
-) => {
-  // Step 1: Select The First Available Seat
-  // Step 2: Verify User Does Not Login
-  // VP: Message 'Bạn chưa đăng nhập' Displays
-  await guestBooking(page, commonModal, bookingPage);
-};
-
 // ===== LOGGED IN BOOKING FUNCTION =====
-// Login Before Booking
-const loggedInBooking = async (
+// Verify Booking When Logging In Beforehand
+const verifyBookingWhenLoggingInBeforehand = async (
   page: Page,
   commonModal: CommonModal,
   bookingPage: BookingPage,
@@ -453,18 +440,6 @@ const loggedInBooking = async (
   );
 };
 
-// Verify Booking When Logging In Beforehand
-const verifyBookingWhenLoggingInBeforehand = async (
-  page: Page,
-  commonModal: CommonModal,
-  bookingPage: BookingPage,
-) => {
-  // Step 1: Select The First Available Seat
-  // Step 2: Verify User Does Not Login
-  // VP: Message 'Bạn chưa đăng nhập' Displays
-  await loggedInBooking(page, commonModal, bookingPage);
-};
-
 export {
   selectMovieFromSelectOption,
   selectMovieFromSelectOptionAsGuest,
@@ -478,8 +453,6 @@ export {
   verifySeatNotSelected,
   selectMovieInfo,
   loginWhileBooking,
-  guestBooking,
   verifyBookingAsGuest,
-  loggedInBooking,
   verifyBookingWhenLoggingInBeforehand,
 };

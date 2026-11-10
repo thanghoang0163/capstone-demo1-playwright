@@ -35,11 +35,6 @@ export abstract class BasePage {
     await this.clickByRole("link", name);
   }
 
-  // Click Textbox Role
-  public async clickTextboxRole(name: string, exact = true) {
-    await this.clickByRole("textbox", name, exact);
-  }
-
   // Click Button Role
   public async clickButtonRole(name: string, exact = true) {
     await this.clickByRole("button", name, exact);
@@ -55,12 +50,10 @@ export abstract class BasePage {
     locator: PlaywrightLocator,
     options?: { timeout?: number },
   ) {
-    // handle customParam ....
     await this.resolveLocator(locator).click({
       timeout: timeout.DEFAULT,
       ...options,
     });
-    // handle ...
   }
 
   // Click Href Filter
@@ -107,6 +100,14 @@ export abstract class BasePage {
     return await this.page.getByRole("alert").textContent();
   }
 
+  // ===== WAIT FOR ELEMENT FUNCTION =====
+  // Wait For Element Appear
+  public async waitForElementAppear(locator: string): Promise<void> {
+    await this.page.getByRole("heading", { name: locator }).waitFor({
+      state: "visible",
+    });
+  }
+
   // ===== EXPECT FUNCTION =====
   // Equal Expectation
   public async equalExpect(
@@ -123,10 +124,8 @@ export abstract class BasePage {
   // To Be Visible Expectation
   public async toBeVisibleExpect(
     actual: Locator,
-    messageOrOptions: string | { message?: string } | undefined,
-    option?: {
-      timeout?: number;
-    },
+    messageOrOptions?: string | { message?: string },
+    option?: { timeout?: number },
   ): Promise<void> {
     await expect(actual, messageOrOptions).toBeVisible({
       timeout: timeout.LONG,
@@ -137,11 +136,9 @@ export abstract class BasePage {
   // To Have URL Expectation
   public async toHaveUrlExpect(
     actual: Page,
-    messageOrOptions: string | { message?: string } | undefined,
-    urlExpected: string,
-    option?: {
-      timeout?: number;
-    },
+    messageOrOptions?: string | { message?: string },
+    urlExpected: string = "",
+    option?: { timeout?: number },
   ): Promise<void> {
     await expect(actual, messageOrOptions).toHaveURL(urlExpected, {
       timeout: timeout.DEFAULT,
@@ -153,9 +150,7 @@ export abstract class BasePage {
   public async toBeInViewportExpect(
     actual: Locator,
     messageOrOptions: string | { message?: string } | undefined,
-    option?: {
-      timeout?: number;
-    },
+    option?: { timeout?: number },
   ): Promise<void> {
     await expect(actual, messageOrOptions).toBeInViewport({
       timeout: timeout.SHORT,
