@@ -1,4 +1,5 @@
 import { test as base } from "@playwright/test";
+import { logger } from "~/utils/logger";
 import { LoadingScreen } from "~/components/LoadingScreen";
 import { CommonModal } from "~/pages/modals/CommonModal";
 import { TopNavigation } from "~/components/TopNavigation";
@@ -19,10 +20,57 @@ type MyFixtures = {
   bookingPage: BookingPage;
   profilePage: ProfilePage;
   inputField: InputField;
+  pageEvents: void;
+  logCollector: void;
 };
 
 // ===== DEFINE TEST FUNCTION =====
 export const test = base.extend<MyFixtures>({
+  // ===== BROWSER EVENTS =====
+  pageEvents: [
+    async ({ page }, use) => {
+      page.on("console", (msg) => {
+        if (msg.type() === "error") {
+          logger.warn(`Browser console error: ${msg.text()}`);
+        }
+      });
+      page.on("pageerror", (error) => {
+        logger.error(`Page error: ${error.message}`);
+      });
+      page.on("response", (response) => {
+        if (response.status() >= 400) {
+          logger.warn(`HTTP ${response.status()} ${response.url()}`);
+        }
+      });
+
+      await use();
+    },
+    { auto: true },
+  ],
+
+  // ===== LOGGING =====
+  // Runs Automatically For Every Test
+  logCollector: [
+    async ({}, use, testInfo) => {
+      logger.info(`START: ${testInfo.title}`);
+
+      await use();
+
+      logger.info(`END: ${testInfo.title} -> ${testInfo.status}`);
+
+      const log = logger.flush();
+
+      // Attach The Log To The Report Only When The Test Does Not Pass As Expected
+      if (testInfo.status !== testInfo.expectedStatus) {
+        await testInfo.attach("test.log", {
+          body: log,
+          contentType: "text/plain",
+        });
+      }
+    },
+    { auto: true },
+  ],
+
   // ===== COMPONENTS =====
   // Top Navigation
   topNavigation: async ({ page }, use) => {

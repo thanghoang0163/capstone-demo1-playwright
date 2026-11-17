@@ -2,6 +2,7 @@ import {
   APIRequestContext,
   request as playwrightRequest,
 } from "@playwright/test";
+import { logger } from "~/utils/logger";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -29,10 +30,17 @@ export const fetchApi = async <T = unknown>(
   const context = request ?? (await playwrightRequest.newContext());
 
   try {
+    const startTime = Date.now();
     const res = await context.fetch(url, { method, ...rest });
+
+    logger.info(`API ${method} ${url} -> ${res.status()}`, {
+      durationMs: Date.now() - startTime,
+      body: rest.data,
+    });
 
     if (!res.ok()) {
       const errorText = await res.text();
+      logger.error(`API ${method} ${url} failed: ${res.status()}`, errorText);
       throw new Error(
         `Failed to ${method} ${url}: ${res.status()} ${res.statusText()}. Response: ${errorText}`,
       );

@@ -62,7 +62,9 @@ const selectMovieFromSelectOption = async (bookingPage: BookingPage) => {
   // Get Movie ID In The Movies List
   const movieId = movies[6]?.maPhim;
 
-  if (movieId === undefined) return;
+  if (movieId === undefined) {
+    throw new Error(`Không lấy được mã phim ${movieId} từ API danh sách phim`);
+  }
 
   // Get Movie Show Times List From API
   const movieShowTimes = (await getMovieShowTimes(movieId)) as MovieShowTimes;
@@ -76,7 +78,9 @@ const selectMovieFromSelectOption = async (bookingPage: BookingPage) => {
   // Get Show Times ID In The Cinemas List
   const showTimeId = cinemas?.lichChieuPhim?.[0]?.maLichChieu;
 
-  if (!cinemaId || !showTimeId) return;
+  if (!cinemaId || !showTimeId) {
+    throw new Error(`Phim ${movieId} không có cụm rạp hoặc suất chiếu từ API`);
+  }
 
   // Step 1: Select A Movie
   await bookingPage.selectMovieOption(movieId.toString());
