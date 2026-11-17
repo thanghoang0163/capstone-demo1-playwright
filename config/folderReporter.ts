@@ -46,6 +46,15 @@ class FolderReporter implements Reporter {
     fs.mkdirSync(outputDir, { recursive: true });
 
     for (const attachment of result.attachments) {
+      // Attachment Created From Text/Buffer Has No File Path
+      if (!attachment.path && attachment.body) {
+        fs.writeFileSync(
+          path.join(outputDir, attachment.name),
+          attachment.body,
+        );
+        continue;
+      }
+
       if (!attachment.path) {
         continue;
       }

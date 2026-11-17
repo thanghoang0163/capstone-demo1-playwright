@@ -1,4 +1,5 @@
-import { Locator, Page, expect } from "@playwright/test";
+import { Locator, Page, expect, test } from "@playwright/test";
+import { logger } from "~/utils/logger";
 import { timeout } from "~/constants/timeoutConstant";
 
 type PlaywrightLocator = string | Locator;
@@ -22,7 +23,10 @@ export abstract class BasePage {
     name: string | RegExp = "",
     exact?: boolean,
   ) {
-    await this.page.getByRole(role, { name, exact }).click();
+    await test.step(`Click ${role}: ${name}`, async () => {
+      logger.info(`Click ${role}: ${name}`);
+      await this.page.getByRole(role, { name, exact }).click();
+    });
   }
 
   // Click Link Role
@@ -50,9 +54,11 @@ export abstract class BasePage {
     locator: PlaywrightLocator,
     options?: { timeout?: number },
   ) {
-    await this.resolveLocator(locator).click({
-      timeout: timeout.DEFAULT,
-      ...options,
+    const target = this.resolveLocator(locator);
+
+    await test.step(`Click: ${target}`, async () => {
+      logger.info(`Click: ${target}`);
+      await target.click({ timeout: timeout.DEFAULT, ...options });
     });
   }
 
@@ -77,9 +83,11 @@ export abstract class BasePage {
     value: string,
     options?: { timeout?: number },
   ) {
-    await this.resolveLocator(locator).fill(value, {
-      timeout: timeout.DEFAULT,
-      ...options,
+    const target = this.resolveLocator(locator);
+
+    await test.step(`Fill: ${target}`, async () => {
+      logger.info(`Fill: ${target}`);
+      await target.fill(value, { timeout: timeout.DEFAULT, ...options });
     });
   }
 
